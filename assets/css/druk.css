@@ -1,0 +1,24 @@
+/* /fonts/druk.css */
+
+@font-face {
+  font-family: 'Druk';
+  src: url('/fonts/Druk Condensed Cyr Super.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Druk Text Cyr Heavy';
+  src: url('/fonts/Druk Text Cyr Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Tailwind utility-compatible font classes */
+.font-druk {
+  font-family: 'Druk', sans-serif;
+}
+
+.font-druk-heavy {
+  font-family: 'Druk Text Cyr Heavy', sans-serif;
+}

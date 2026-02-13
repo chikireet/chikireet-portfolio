@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Druk';
+  src: url('/fonts/Druk%20Condensed%20Cyr%20Super.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Druk Text Cyr Heavy';
+  src: url('/fonts/Druk%20Text%20Cyr%20Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}

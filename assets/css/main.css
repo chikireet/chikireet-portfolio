@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'CanelaCondensed';
+  /* Try the path without the leading slash if /fonts/ fails */
+  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  /* Rename this to avoid the conflict */
+  font-family: 'CanelaCustom'; 
+  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+

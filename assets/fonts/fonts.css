@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Druk Text Cyr Heavy';
+  src: url('/fonts/DrukTextCyr-Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+.font-druk {
+  font-family: 'Druk Text Cyr Heavy', sans-serif;
+}
