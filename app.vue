@@ -7,16 +7,14 @@
 <style>
 html,
 body {
-  /* Заменяем фиксированную высоту на минимальную, чтобы контент мог растягиваться */
-  min-height: 100%; 
+  min-height: 100% !important;
   margin: 0;
   padding: 0;
-  /* УДАЛЯЕМ overflow: hidden и разрешаем скролл */
-  overflow-x: hidden; /* Запрещаем только горизонтальный скролл, если есть вылеты */
-  overflow-y: auto;   /* Разрешаем вертикальный скролл */
+  /* Разрешаем вертикальный скролл и запрещаем горизонтальный */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   background-color: #ffc200;
-  
-  /* Улучшаем плавность скролла на мобильных устройствах */
-  -webkit-overflow-scrolling: touch;
+  /* Улучшаем отзывчивость скролла на iOS */
+  -webkit-overflow-scrolling: touch !important;
 }
 </style>
