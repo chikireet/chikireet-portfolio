@@ -9,7 +9,7 @@
         class="video-element"
         :aria-label="`${title} - Short film cinematography by Toronto Director Gene Perez`"
       >
-        <source src="/previews/the_phantom_v1.mp4" type="video/mp4" />
+        <source src="/previews/the_phantom.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>

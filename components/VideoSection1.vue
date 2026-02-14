@@ -10,7 +10,7 @@
         playsinline
         class="video-element"
       >
-        <source src="/previews/chill_your_stress_othership_v1.mp4" type="video/mp4" />
+        <source src="/previews/chill_your_stress_othership.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
