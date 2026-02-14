@@ -211,16 +211,15 @@ watch(activeTab, (newTab) => {
 })
 
 const videoWorks = [
-  { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4' },
-  { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4 },
-  { title: 'JORDAN', client: 'BinBaz', type: 'Travel Video', vimeoId: '1158027631', localPreview: 'jordan.mp4' },
-  { title: 'PHANTOM', client: 'Trailer', type: 'Short Film', vimeoId: '1158824495', localPreview: 'the_phantom.mp4' },
-  { title: 'FEEL IT', client: 'Hyundai', type: 'Commercial', vimeoId: '1161371386', localPreview: 'hyundai_feel_it.mp4' },
-  { title: 'SMOOTH X2', client: 'ZHIYUN', type: 'Commercial', vimeoId: '1161369145', localPreview: 'zhiyun_smooth_x2' },
-  { title: 'TTC', client: 'TTC', type: 'Creative Project', vimeoId: '1158583072', localPreview: 'ttc_if_you_see_something_say_something.mp4' },
-  { title: 'MSLS', client: 'Rosh Posh', type: 'Commercial', vimeoId: '1161372925', localPreview: 'rosh_posh_msls.mp4' },
-  { title: 'ALTERED STATE', client: 'Othership', type: 'Commercial', vimeoId: '1158028099', localPreview: 'chill_your_stress_othership.mp4' },
-  { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4' }
+  { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: '/Previews/othership_freeze_the_momen.mp4' },
+  { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: '/Previews/romes_rock_n_roll_is_asleep.mp4' },
+  { title: 'JORDAN', client: 'BinBaz', type: 'Travel Video', vimeoId: '1158027631', localPreview: '/Previews/jordan.mp4' },
+  { title: 'PHANTOM', client: 'Trailer', type: 'Short Film', vimeoId: '1158824495', localPreview: '/Previews/the_phantom.mp4' },
+  { title: 'FEEL IT', client: 'Hyundai', type: 'Commercial', vimeoId: '1134782625', localPreview: '/Previews/hyundai_feel_it.mp4' },
+  { title: 'OTHERSHIP', client: 'Chill', type: 'Commercial', vimeoId: '1161375860', localPreview: '/Previews/chill_your_stress_othership.mp4' },
+  { title: 'ROSH POSH', client: 'MSLS', type: 'Commercial', vimeoId: '1134782625', localPreview: '/Previews/rosh_posh_msls.mp4' },
+  { title: 'SMOOTH X2', client: 'Zhiyun', type: 'Commercial', vimeoId: '1158027631', localPreview: '/Previews/zhiyun_smooth_x2.mp4' },
+  { title: 'SAY SOMETHING', client: 'TTC', type: 'Commercial', vimeoId: '1158824495', localPreview: '/Previews/ttc_if_you_see_something_say_something.mp4' }
 ]
 
 const photographyWorks = [
