@@ -2,16 +2,15 @@
   <section class="video-section section bg-black relative">
     <iframe
       :src="`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&background=1`"
-      :title="`${title} - Professional project video directed by Gene Perez`"
       frameborder="0"
       allow="autoplay; fullscreen"
       allowfullscreen
       class="video-iframe"
     ></iframe>
 
-    <h2 class="absolute z-10 bottom-10 left-10 text-white text-3xl font-bold uppercase">
+    <div class="absolute z-10 bottom-10 left-10 text-white text-3xl font-bold">
       {{ title }}
-    </h2>
+    </div>
   </section>
 </template>
 
@@ -29,7 +28,6 @@ defineProps({
 </script>
 
 <style scoped>
-/* Scoped styles remain unchanged */
 .video-section {
   width: 100vw;
   height: 100vh;

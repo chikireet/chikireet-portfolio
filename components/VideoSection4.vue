@@ -22,41 +22,31 @@
 
 <script setup>
 defineProps({
-  videoId: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    default: '',
-  },
+  videoId: { type: String, required: true },
+  title: { type: String, default: '' }
 })
 </script>
 
 <style scoped>
-/* Scoped styles remain unchanged */
 .video-section {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh !important;
   overflow: hidden;
   position: relative;
   background-color: black;
 }
-
 .video-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
-
 .video-element {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* Ensures your cinematography fills the screen while maintaining proper aspect ratio */
   object-fit: cover;
   z-index: 0;
 }

@@ -1,12 +1,7 @@
 <template>
   <div class="slogan-container">
-    <h1 
-      id="hero-title"
-      :class="['slogan-line', 'left', { animate: visible }]"
-    >
-      Stories You Feel.
-    </h1>
-    <div :class="['slogan-line', 'right', { animate: visible }]">That’s What I Do.</div>
+    <div :class="['slogan-line', 'left', { animate: visible }]">STORIES YOU FEEL.</div>
+    <div :class="['slogan-line', 'right', { animate: visible }]">THAT’S WHAT I DO.</div>
   </div>
 </template>
 
@@ -26,6 +21,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Keep existing styles */
 .slogan-container {
   position: absolute;
   z-index: 50;
@@ -46,8 +42,6 @@ onMounted(() => {
   text-transform: uppercase;
   white-space: nowrap;
   transform: translateX(0);
-  /* Added font-weight to ensure semantic headers maintain visual style */
-  font-weight: normal; 
 }
 .slogan-line.left { transform: translateX(-100vw); }
 .slogan-line.right { transform: translateX(100vw); }

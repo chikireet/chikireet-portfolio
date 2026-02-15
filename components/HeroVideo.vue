@@ -13,7 +13,6 @@
           loop
           playsinline
           class="w-full h-full object-contain"
-          aria-label="Cinematography showreel by Toronto Director Gene Perez"
         >
           <source src="/your-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -21,12 +20,13 @@
       </div>
     </div>
 
+    <!-- Постер -->
     <transition name="fade">
       <img
         v-if="showPoster"
         src="/poster.jpg"
         class="absolute inset-0 w-full h-full object-contain z-20 bg-black"
-        alt="Behind the scenes of a cinematic film production in Toronto directed by Gene Perez"
+        alt="Poster"
       />
     </transition>
   </div>
@@ -54,7 +54,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Scoped styles remain unchanged */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

@@ -8,37 +8,46 @@ export default defineNuxtConfig({
       title: 'Gene Perez | Director & Photographer in Toronto',
       meta: [
         { charset: 'utf-8' },
-        // КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: Этот тег разрешает скролл и фиксирует масштаб на смартфонах
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' },
-        { name: 'description', content: 'Gene Perez is a Toronto-based director and photographer whose work blends international sensibility with a refined, story-driven aesthetic.' },
-        
+        // Задает цвет интерфейса браузера
+        { name: 'theme-color', content: '#ffc200' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        // Делает статус-бар прозрачным для бесшовного вида
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        { 
+          name: 'viewport', 
+          content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
+        },
+        { name: 'description', content: 'Gene Perez is a Toronto-based director and photographer.' },
         { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
-        { property: 'og:description', content: 'Leading with a Story-First philosophy in Cinematography and Photography.' },
         { property: 'og:type', content: 'website' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-        { rel: 'manifest', href: '/site.webmanifest' }
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
       ]
     }
   },
-
   components: true,
   css: ['@/assets/css/fonts.css'],
-
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxt/image'
-  ],
-
-  image: {
-    format: ['webp', 'avif', 'jpeg'],
-    quality: 80,
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
+  image: { format: ['webp', 'avif', 'jpeg'], quality: 80 },
+  vite: { 
+    plugins: [tsconfigPaths()],
+    build: {
+      rollupOptions: {
+        external: [
+          '/Previews/chill_your_stress_othership.mp4',
+          '/Previews/hyundai_feel_it.mp4',
+          '/Previews/jordan.mp4',
+          '/Previews/othership_freeze_the_momen.mp4',
+          '/Previews/romes_rock_n_roll_is_asleep.mp4',
+          '/Previews/rosh_posh_msls.mp4',
+          '/Previews/the_phantom.mp4',
+          '/Previews/ttc_if_you_see_something_say_something.mp4',
+          '/Previews/zhiyun_smooth_x2.mp4'
+        ]
+      }
+    }
   },
-
-  tailwindcss: { viewer: false },
-  vite: { plugins: [tsconfigPaths()] },
   ssr: true 
 })

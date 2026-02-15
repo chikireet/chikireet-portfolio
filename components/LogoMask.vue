@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute inset-0 z-20 w-screen h-screen pointer-events-none">
+  <div class="absolute inset-0 z-20 w-full h-full pointer-events-none">
     <div
       v-show="isReady"
       ref="maskWrapper"
@@ -87,7 +87,6 @@ const animateLogoUp = (startScale) => {
       animationFrame = requestAnimationFrame(animate)
     } else {
       animationCompleted.value = true
-      // Set the global flag when animation ends
       window.hasAlreadySeenIntro = true
     }
   }
@@ -99,20 +98,23 @@ const updateSize = () => {
   if (typeof window === 'undefined') return
 
   viewportWidth.value = window.innerWidth
-  viewportHeight.value = window.innerHeight
+  // FIX: Using innerHeight ensures centering regardless of address bar state
+  viewportHeight.value = window.innerHeight 
   cx.value = viewportWidth.value / 2
-  cy.value = Math.floor(viewportHeight.value / 2)
+  cy.value = viewportHeight.value / 2
 
   const scaleW = viewportWidth.value / originalWidth
   const scaleH = viewportHeight.value / originalHeight
 
+  const isMobile = viewportWidth.value <= 850
+  
   if (!animationCompleted.value) {
     scale.value = Math.min(scaleW, scaleH) * 0.95
     translateY.value = 0
   } else {
-    const isMobile = viewportWidth.value <= 850
     finalScale = isMobile ? 0.28 : 0.45
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 27 : 30))
+    // FIX: Using dynamic calculation to keep logo below notch
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 30))
 
     scale.value = finalScale
     translateY.value = finalTranslateY
@@ -120,7 +122,6 @@ const updateSize = () => {
 }
 
 onMounted(async () => {
-  // Check our session-level variable
   if (window.hasAlreadySeenIntro) {
     isReady.value = false
     return
@@ -137,7 +138,8 @@ onMounted(async () => {
 
   finalScale = isMobile ? 0.278 : 0.415
   if (finalTranslateY === null) {
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 31.5 : 43))
+    // FIX: Offset specifically for iPhone top safe areas
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 43))
   }
 
   scale.value = initialScale
@@ -156,5 +158,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* нет стилей */
+/* Scoped styles remain clean as positioning is SVG-based */
 </style>

@@ -6,7 +6,6 @@ useSeoMeta({
   title: 'Shop Digital Assets | Gene Perez Toronto Director',
   ogTitle: 'Gene Perez Shop | Coming Soon',
   description: 'The official store for professional filmmaking assets, LUTs, and photography presets by Toronto-based Director Gene Perez. Sign up for early access.',
-  // FIXED: Escaped the single quote to prevent syntax error
   ogDescription: 'The store isn\'t open yet, but trust me, it\'ll be worth the wait.',
   ogImage: '/og-image.jpg',
   twitterCard: 'summary_large_image',
@@ -77,7 +76,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       :show="showMenu" 
     />
 
-    <main class="relative z-10 px-8 flex flex-col items-center text-center max-w-4xl mx-auto flex-grow justify-center">
+    <main class="relative z-10 px-8 flex flex-col items-center text-center max-w-4xl mx-auto flex-grow justify-start md:justify-center">
       <Transition name="fade" mode="out-in">
         <div v-if="submitted" class="py-20 appear-animate flex flex-col items-center">
           <h2 class="druk-title text-[#ffc200] text-6xl md:text-8xl uppercase tracking-tighter leading-none mb-6">
@@ -92,8 +91,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           </NuxtLink>
         </div>
 
-        <div v-else class="appear-animate">
-          <div class="relative inline-block py-10 px-20">
+        <div v-else class="appear-animate mt-32 md:mt-0">
+          <div class="relative inline-block py-10 px-4 md:px-20">
             <h1 class="magical-text druk-title text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] relative z-10">
               Coming Soon
             </h1>
@@ -141,9 +140,18 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 </template>
 
 <style scoped>
+/* Unified Scrollbar Removal */
+:global(html::-webkit-scrollbar), 
+:global(body::-webkit-scrollbar) {
+  display: none !important;
+  width: 0 !important;
+}
+
 :global(html), :global(body) { 
   background-color: black !important; 
   height: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
@@ -181,5 +189,21 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 @keyframes fade-up { 
   from { opacity: 0; transform: translateY(30px); } 
   to { opacity: 1; transform: translateY(0); } 
+}
+
+/* Specific iPhone distance adjustment */
+@media (max-width: 850px) {
+  main {
+    /* Existing padding for the top distance */
+    padding-top: 80px; 
+    
+    /* ADD THIS: Increase this value to push the footer lower */
+    padding-bottom: 160px; 
+  }
+  
+  .mt-32 {
+    /* This controls the distance from the top logo */
+    margin-top: 4rem !important; 
+  }
 }
 </style>

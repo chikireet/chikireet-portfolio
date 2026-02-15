@@ -36,10 +36,10 @@ defineProps({
 </script>
 
 <style scoped>
-/* Scoped styles remain unchanged */
 .video-section {
   width: 100vw;
-  height: 100vh;
+  /* Использование dvh для идеального выравнивания на iPhone */
+  height: 100dvh !important;
   overflow: hidden;
   position: relative;
   background-color: black;
@@ -58,7 +58,6 @@ defineProps({
   left: 0;
   width: 100%;
   height: 100%;
-  /* Ensures the Jordan footage fills the frame perfectly without distortion */
   object-fit: cover;
   z-index: 0;
 }
@@ -66,7 +65,7 @@ defineProps({
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35); /* уровень затемнения */
+  background: rgba(0, 0, 0, 0.35);
   z-index: 1;
   pointer-events: none;
 }

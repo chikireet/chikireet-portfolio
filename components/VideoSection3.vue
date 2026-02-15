@@ -24,49 +24,38 @@
 
 <script setup>
 defineProps({
-  videoId: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    default: '',
-  },
+  videoId: { type: String, required: true },
+  title: { type: String, default: '' }
 })
 </script>
 
 <style scoped>
-/* Scoped styles remain unchanged */
 .video-section {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh !important;
   overflow: hidden;
   position: relative;
   background-color: black;
 }
-
 .video-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
-
 .video-element {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* Industry standard for background cinematography */
   object-fit: cover;
   z-index: 0;
 }
-
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35); /* уровень затемнения */
+  background: rgba(0, 0, 0, 0.35);
   z-index: 1;
   pointer-events: none;
 }

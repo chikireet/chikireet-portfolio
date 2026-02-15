@@ -1,111 +1,97 @@
 <template>
   <div class="panel story-panel bg-black text-white flex flex-col items-center" @click.stop>
-    <div class="flex-grow flex flex-col justify-start items-center w-full px-6 md:px-12 lg:px-20 pt-40 md:pt-52">
+    <div class="story-content flex-grow flex flex-col justify-start items-center w-full px-6 md:px-12 lg:px-20 pt-64 md:pt-80 pb-32 md:pb-48">
       
-      <div class="w-full max-w-[1200px] text-left md:text-center flex flex-col items-start md:items-center">
-        <div class="overflow-hidden mb-8 md:mb-10">
+      <div class="w-full max-w-[1200px] text-center flex flex-col items-center">
+        <div class="overflow-hidden mb-4 md:mb-6">
           <h2 class="about-title text-yellow-400 uppercase leading-[0.85]">Story First</h2>
         </div>
-        <div class="mb-10 md:mb-12">
-          <p class="about-body text-[#ffc200] leading-[1.4] italic">
-            Gene Perez is a Toronto-based Director and Photographer who leads with a story-first philosophy, believing that a compelling narrative must exist before the first frame is captured.
+        <div class="mb-6 md:mb-8">
+          <p class="about-body text-[#ffc200] leading-[1.4] italic mx-auto">
+            Yevhen Pereverziev is a Toronto-based Director and Photographer who leads with a story-first philosophy, believing that a compelling narrative must exist before the first frame is captured.
           </p>
         </div>
-        <div class="btn-container mb-12 md:mb-2">
+        <div class="btn-container flex justify-center mb-4 md:mb-6">
           <NuxtLink to="/contact" class="collab-btn-modern">
             <span class="btn-inner">Let's Collaborate</span>
           </NuxtLink>
         </div>
       </div>
 
-      <div class="w-full overflow-hidden relative mt-12 md:mt-10 carousel-container">
+      <div class="w-full overflow-hidden relative mt-4 md:mt-8 mb-12 md:mb-20 carousel-container">
         <Transition name="carousel-fade">
           <div v-show="activateCarousel" class="carousel-track animate-scroll-slow">
-            
-            <NuxtImg 
-              v-for="(img, idx) in carouselData" 
-              :key="'a-' + idx" 
-              :src="img.src" 
-              :alt="img.alt" 
-              format="webp"
-              quality="80"
-              sizes="sm:260px md:30vw lg:550px"
-              :loading="idx < 2 ? 'eager' : 'lazy'"
-              :fetchpriority="idx < 2 ? 'high' : 'auto'"
-              class="carousel-img" 
-            />
-
-            <NuxtImg 
-              v-for="(img, idx) in carouselData" 
-              :key="'b-' + idx" 
-              :src="img.src" 
-              :alt="img.alt" 
-              format="webp"
-              quality="80"
-              sizes="sm:260px md:30vw lg:550px"
-              loading="lazy"
-              class="carousel-img" 
-            />
+            <img v-for="n in 6" :key="'a-' + n" :src="`/carousel/img${n}.avif`" decoding="async" alt="" class="carousel-img" />
+            <img v-for="n in 6" :key="'b-' + n" :src="`/carousel/img${n}.avif`" decoding="async" alt="" class="carousel-img" />
           </div>
         </Transition>
-        
-        <div v-if="!activateCarousel" class="h-[150px] md:h-[300px] w-full bg-transparent"></div>
+        <div v-if="!activateCarousel" class="carousel-placeholder"></div>
       </div>
     </div>
-    <SiteFooter />
+    
+    <SiteFooter v-if="showFooter" />
   </div>
 </template>
 
 <script setup>
 defineProps({
-  activateCarousel: { type: Boolean, default: false }
+  activateCarousel: { type: Boolean, default: false },
+  showFooter: { type: Boolean, default: false }
 })
-
-/**
- * Данные карусели с SEO-оптимизированными описаниями
- */
-const carouselData = [
-  { src: '/carousel/img1.avif', alt: 'Toronto Director Gene Perez operating a professional camera rig in a smoky studio environment' },
-  { src: '/carousel/img2.avif', alt: 'Cinematographer Gene Perez setting up a lighting tube for a night shoot in Toronto' },
-  { src: '/carousel/img3.avif', alt: 'Behind the scenes of a cinematic urban production with Director Gene Perez and film crew' },
-  { src: '/carousel/img4.avif', alt: 'Gene Perez using FPV drone goggles for a professional video production in Toronto' },
-  { src: '/carousel/img5.avif', alt: 'Director Gene Perez filming a high-contrast cinematic scene of an athlete in a bathtub' },
-  { src: '/carousel/img6.avif', alt: 'Behind the scenes of a professional commercial production in a sauna directed by Gene Perez' }
-]
 </script>
 
 <style scoped>
-/* Контейнер карусели с эффектом затухания по краям */
+.story-panel { 
+  position: absolute; 
+  width: 100vw; 
+  height: 100dvh !important; 
+  left: 0; 
+  top: 0; 
+  z-index: 10; 
+  display: flex;
+  flex-direction: column;
+}
+
 .carousel-container {
   width: 100%;
   mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-  min-height: 200px;
 }
 
-.carousel-track {
-  display: flex;
-  gap: 1rem;
+.carousel-placeholder {
+  height: clamp(250px, 40vh, 500px);
+  width: 100%;
+  background: transparent;
+}
+
+.carousel-track { 
+  display: flex; 
+  gap: 2rem; 
   width: max-content; 
 }
 
-/* Анимация появления */
-.carousel-fade-enter-active { 
-  transition: opacity 1.5s ease-out, transform 1.5s ease-out; 
-}
-.carousel-fade-enter-from { 
-  opacity: 0; 
-  transform: translateY(20px);
+.carousel-img { 
+  aspect-ratio: 16/9; 
+  width: clamp(350px, 42vw, 800px); 
+  border-radius: 4px; 
+  object-fit: cover; 
 }
 
-.story-panel { position: absolute; width: 100vw; height: 100vh; left: 0; top: 0; z-index: 10; }
+.carousel-fade-enter-active { transition: opacity 1.5s ease-out, transform 1.5s ease-out; }
+.carousel-fade-enter-from { opacity: 0; transform: translateY(20px); }
+
 .btn-container { position: relative; z-index: 9999; pointer-events: auto !important; }
 
-/* Типографика */
-.about-title { font-family: 'Druk Text Cyr Heavy', sans-serif; font-size: clamp(3rem, 8.5vw, 7.5rem); letter-spacing: -0.04em; }
-.about-body { font-family: 'CanelaCondensed', serif; font-size: clamp(1.1rem, 2.1vw, 1.7rem); line-height: 1.4; max-width: 85ch; text-wrap: balance; }
+.about-title { font-family: 'Druk Text Cyr Heavy', sans-serif; font-size: clamp(2.3rem, 7.5vw, 7.5rem); letter-spacing: -0.04em; text-align: center; }
+.about-body { 
+  font-family: 'CanelaCondensed', serif; 
+  font-size: clamp(1rem, 2vw, 1.7rem); 
+  line-height: 1.4; 
+  max-width: 85ch; 
+  text-wrap: balance; 
+  text-align: center;
+}
 
-/* Кнопка */
 .collab-btn-modern { 
   display: inline-block; 
   padding: 18px 45px; 
@@ -113,7 +99,7 @@ const carouselData = [
   color: #ffc200; 
   font-family: 'CanelaCondensed', serif; 
   font-style: italic; 
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem); 
+  font-size: clamp(1rem, 1.6vw, 1.4rem); 
   text-decoration: none; 
   border-radius: 100px; 
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
@@ -128,30 +114,39 @@ const carouselData = [
   box-shadow: 0 10px 30px rgba(255, 194, 0, 0.3); 
 }
 
-/* Стили изображений в карусели */
-.carousel-img { 
-  aspect-ratio: 16/9; 
-  width: clamp(260px, 30vw, 550px); 
-  border-radius: 2px; 
-  object-fit: cover; 
-  will-change: transform; 
-  background: #1a1a1a;
-  flex-shrink: 0;
-}
-
-/* Бесконечная анимация */
 @keyframes scroll-slow { 
   0% { transform: translateX(0); } 
   100% { transform: translateX(-50%); } 
 }
+.animate-scroll-slow { animation: scroll-slow 50s linear infinite; }
 
-.animate-scroll-slow { 
-  animation: scroll-slow 50s linear infinite; 
-}
-
-/* Адаптивность для мобильных */
 @media (max-width: 850px) { 
-  .about-body { text-align: left; font-size: 1.25rem; } 
-  .collab-btn-modern { width: 100%; text-align: center; padding: 14px 30px; } 
+  /* Changed text-align from left to center for mobile */
+  .about-body { text-align: center; font-size: 1.15rem; } 
+  .about-title { text-align: center; }
+  
+  /* Reset width to auto for a centered look on mobile */
+  .collab-btn-modern { width: auto; min-width: 240px; text-align: center; padding: 14px 30px; } 
+  
+  .story-content { 
+    padding-top: 18rem !important; 
+    padding-bottom: 20dvh !important; 
+  } 
+
+  .carousel-container {
+    margin-top: 2rem !important;
+    margin-bottom: 5rem !important;
+  }
+
+  .carousel-img { 
+    width: 85vw; 
+    border-radius: 6px;
+  }
+
+  .carousel-placeholder {
+    height: 30vh;
+  }
+
+  .carousel-track { gap: 1rem; }
 }
 </style>
