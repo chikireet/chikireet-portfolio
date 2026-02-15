@@ -61,7 +61,7 @@ import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent }
 import gsap from 'gsap'
 
 useSeoMeta({
-  title: 'Yevhen Pereverziev | Director & Photographer',
+  title: 'Gene Perez| Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
 })
 
