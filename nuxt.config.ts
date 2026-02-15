@@ -5,8 +5,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      // Updated title to reflect your identity as Yevhen Pereverziev
-      title: 'Yevhen Pereverziev | Director & Photographer in Toronto',
+      // Updated title to reflect your identity as Gene Perez
+      title: 'Gene Perez | Director & Photographer in Toronto',
       meta: [
         { charset: 'utf-8' },
         { name: 'theme-color', content: '#ffc200' },
