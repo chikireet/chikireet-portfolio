@@ -3,7 +3,7 @@
     <div class="video-wrapper">
       <div class="overlay"></div>
       <video autoplay muted loop playsinline class="video-element">
-        <source src="/previews/chill_your_stress_othership.mp4" type="video/mp4" />
+        <source src="/Previews/chill_your_stress_othership.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="absolute z-10 bottom-10 left-10 text-white text-3xl font-bold">
