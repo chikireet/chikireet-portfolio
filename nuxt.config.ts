@@ -5,20 +5,19 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Gene Perez | Director & Photographer in Toronto',
+      // Updated title to reflect your identity as Yevhen Pereverziev
+      title: 'Yevhen Pereverziev | Director & Photographer in Toronto',
       meta: [
         { charset: 'utf-8' },
-        // Задает цвет интерфейса браузера
         { name: 'theme-color', content: '#ffc200' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        // Делает статус-бар прозрачным для бесшовного вида
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { 
           name: 'viewport', 
           content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
         },
-        { name: 'description', content: 'Gene Perez is a Toronto-based director and photographer.' },
-        { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
+        { name: 'description', content: 'Yevhen Pereverziev is a Toronto-based director and photographer.' },
+        { property: 'og:title', content: 'Yevhen Pereverziev | Director & Photographer in Toronto' },
         { property: 'og:type', content: 'website' }
       ],
       link: [
@@ -27,14 +26,28 @@ export default defineNuxtConfig({
       ]
     }
   },
+
+  // FIX: Nitro configuration for modern Netlify deployments
+  // This resolves the ENOENT server.json error by using the standard preset
+  nitro: {
+    preset: 'netlify'
+  },
+
   components: true,
   css: ['@/assets/css/fonts.css'],
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
-  image: { format: ['webp', 'avif', 'jpeg'], quality: 80 },
+  
+  image: { 
+    format: ['webp', 'avif', 'jpeg'], 
+    quality: 80 
+  },
+
   vite: { 
     plugins: [tsconfigPaths()],
     build: {
       rollupOptions: {
+        // FIX: Lowercase paths to match the 'Previews' folder name on Linux/Netlify
+        // These are treated as external so Vite doesn't try to bundle them as JS
         external: [
           '/Previews/chill_your_stress_othership.mp4',
           '/Previews/hyundai_feel_it.mp4',
@@ -49,5 +62,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
+  // Keep SSR enabled for better SEO
   ssr: true 
 })
