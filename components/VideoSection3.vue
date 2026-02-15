@@ -11,7 +11,7 @@
         class="video-element"
         :aria-label="`${title} - Music video cinematography for ROMES directed by Gene Perez`"
       >
-        <source src="/previews/romes_rock_n_roll_is_asleep.mp4" type="video/mp4" />
+        <source src="/Previews/romes_rock_n_roll_is_asleep.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
