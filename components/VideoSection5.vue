@@ -11,7 +11,7 @@
         class="video-element"
         :aria-label="`${title} - Creative video project by Toronto Director Gene Perez`"
       >
-        <source src="/Previews/ttc_if_you_see_something_say_something.mp4" type="video/mp4" />
+        <source src="/previews/ttc_if_you_see_something_say_something.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
