@@ -46,18 +46,18 @@ export default defineNuxtConfig({
     plugins: [tsconfigPaths()],
     build: {
       rollupOptions: {
-        // FIX: Lowercase paths to match the 'Previews' folder name on Linux/Netlify
+        // FIX: Lowercase paths to match the 'previews' folder name on Linux/Netlify
         // These are treated as external so Vite doesn't try to bundle them as JS
         external: [
-          '/Previews/chill_your_stress_othership.mp4',
-          '/Previews/hyundai_feel_it.mp4',
-          '/Previews/jordan.mp4',
-          '/Previews/othership_freeze_the_momen.mp4',
-          '/Previews/romes_rock_n_roll_is_asleep.mp4',
-          '/Previews/rosh_posh_msls.mp4',
-          '/Previews/the_phantom.mp4',
-          '/Previews/ttc_if_you_see_something_say_something.mp4',
-          '/Previews/zhiyun_smooth_x2.mp4'
+          '/previews/chill_your_stress_othership.mp4',
+          '/previews/hyundai_feel_it.mp4',
+          '/previews/jordan.mp4',
+          '/previews/othership_freeze_the_momen.mp4',
+          '/previews/romes_rock_n_roll_is_asleep.mp4',
+          '/previews/rosh_posh_msls.mp4',
+          '/previews/the_phantom.mp4',
+          '/previews/ttc_if_you_see_something_say_something.mp4',
+          '/previews/zhiyun_smooth_x2.mp4'
         ]
       }
     }
