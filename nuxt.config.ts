@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      // Updated title to reflect your identity as Gene Perez
       title: 'Gene Perez | Director & Photographer in Toronto',
       meta: [
         { charset: 'utf-8' },
@@ -27,10 +26,9 @@ export default defineNuxtConfig({
     }
   },
 
-  // FIX: Nitro configuration for modern Netlify deployments
-  // This resolves the ENOENT server.json error by using the standard preset
+  // Updated for Vercel deployment
   nitro: {
-    preset: 'netlify'
+    preset: 'vercel'
   },
 
   components: true,
@@ -43,14 +41,13 @@ export default defineNuxtConfig({
   },
 
   vite: {
-  plugins: [tsconfigPaths()],
-  build: {
-    rollupOptions: {
-      // Remove the 'external' array entirely or leave it empty
-      external: [] 
+    plugins: [tsconfigPaths()],
+    build: {
+      rollupOptions: {
+        external: [] 
+      }
     }
-  }
-}
+  },
 
   // Keep SSR enabled for better SEO
   ssr: true 
