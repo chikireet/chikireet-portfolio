@@ -42,26 +42,15 @@ export default defineNuxtConfig({
     quality: 80 
   },
 
-  vite: { 
-    plugins: [tsconfigPaths()],
-    build: {
-      rollupOptions: {
-        // FIX: Lowercase paths to match the 'previews' folder name on Linux/Netlify
-        // These are treated as external so Vite doesn't try to bundle them as JS
-        external: [
-          '/previews/chill_your_stress_othership.mp4',
-          '/previews/hyundai_feel_it.mp4',
-          '/previews/jordan.mp4',
-          '/previews/othership_freeze_the_momen.mp4',
-          '/previews/romes_rock_n_roll_is_asleep.mp4',
-          '/previews/rosh_posh_msls.mp4',
-          '/previews/the_phantom.mp4',
-          '/previews/ttc_if_you_see_something_say_something.mp4',
-          '/previews/zhiyun_smooth_x2.mp4'
-        ]
-      }
+  vite: {
+  plugins: [tsconfigPaths()],
+  build: {
+    rollupOptions: {
+      // Remove the 'external' array entirely or leave it empty
+      external: [] 
     }
-  },
+  }
+}
 
   // Keep SSR enabled for better SEO
   ssr: true 
