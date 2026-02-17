@@ -114,7 +114,7 @@ const updateSize = () => {
   } else {
     finalScale = isMobile ? 0.28 : 0.45
     // FIX: Using dynamic calculation to keep logo below notch
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 30))
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 35 : 30))
 
     scale.value = finalScale
     translateY.value = finalTranslateY
@@ -139,7 +139,7 @@ onMounted(async () => {
   finalScale = isMobile ? 0.278 : 0.415
   if (finalTranslateY === null) {
     // FIX: Offset specifically for iPhone top safe areas
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 35 : 43))
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 43))
   }
 
   scale.value = initialScale
