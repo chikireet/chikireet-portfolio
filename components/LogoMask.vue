@@ -116,7 +116,7 @@ const updateSize = () => {
    * We calculate translateY based on half viewport height
    */
   const scaledHeight = originalHeight * finalScale
-  const topOffset = isMobile ? 16 : 23
+  const topOffset = isMobile ? 15 : 23
   finalTranslateY = -(viewportHeight.value / 2 - (topOffset + (scaledHeight / 2)))
 
   if (!animationCompleted.value) {
