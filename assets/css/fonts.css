@@ -8,3 +8,11 @@
 .font-druk {
   font-family: 'Druk Text Cyr Heavy', sans-serif;
 }
+
+font-family: 'CanelaCustom'; 
+  /* This points exactly to your public/fonts/ folder */
+  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2'); 
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
