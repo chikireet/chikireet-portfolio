@@ -27,13 +27,11 @@
         :key="videoId"
         class="panel video-panel"
         :ref="el => sectionRefs[index] = el"
-        :style="{ top: (index + 1) * 100 + 'dvh' }"
       >
         <component 
           v-if="Math.abs(currentIndex - (index + 1)) <= 1"
           :is="videoSections[index]" 
           :video-id="videoId" 
-          /* REMOVED :title prop to clear the corner text */
         />
         
         <div class="section-title-mask">
@@ -45,10 +43,7 @@
         </div>
       </div>
     
-      <StoryFirstSection 
-        class="panel story-panel" 
-        :activate-carousel="showCarousel" 
-      />
+      <StoryFirstSection style="top: 600dvh" :activate-carousel="showCarousel" />
     </div>
 
     <VideoModal 
@@ -66,7 +61,7 @@ import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent }
 import gsap from 'gsap'
 
 useSeoMeta({
-  title: 'Gene Perez | Director & Photographer',
+  title: 'Yevhen Pereverziev | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
 })
 
@@ -85,7 +80,7 @@ const videoSections = [
 
 const container = ref(null)
 const currentIndex = ref(0)
-const total = 7 
+const total = 7
 let animating = false
 let mainObserver = null
 const isModalOpen = ref(false)
@@ -145,14 +140,10 @@ function animateCaption(index) {
 const goTo = async (index) => {
   if (index < 0 || index >= total || animating || isModalOpen.value) return;
   animating = true;
-  const panels = container.value.children; 
-  const currentPanel = panels[currentIndex.value]; 
-  const nextPanel = panels[index];
+  const panels = container.value.children; const currentPanel = panels[currentIndex.value]; const nextPanel = panels[index];
   
   if (index !== 0 && index !== 6) { 
-    gsap.set(nextPanel, { scale: 0.7 }); 
-    animateTitle(index); 
-    animateCaption(index); 
+    gsap.set(nextPanel, { scale: 0.7 }); animateTitle(index); animateCaption(index); 
   } else { 
     gsap.set(nextPanel, { scale: 1 }); 
   }
@@ -175,8 +166,7 @@ const updateLogoSize = () => {
 
 onMounted(() => {
   if (typeof window === 'undefined') return;
-  updateLogoSize(); 
-  gsap.set(container.value, { y: 0 });
+  updateLogoSize(); gsap.set(container.value, { y: 0 });
 
   if (window.hasAlreadySeenIntro) {
     logoVisible.value = true;
@@ -190,16 +180,15 @@ onMounted(() => {
   }
   
   import('gsap/Observer').then((m) => {
-    const Observer = m.default; 
-    gsap.registerPlugin(Observer);
+    const Observer = m.default; gsap.registerPlugin(Observer);
     mainObserver = Observer.create({
       target: window, 
       type: 'wheel,touch,pointer', 
       preventDefault: false, 
       wheelSpeed: -1.2, 
-      tolerance: 5,            
-      dragMinimum: 0,          
-      onUp: () => !animating && goTo(currentIndex.value + 1),    
+      tolerance: 5,           
+      dragMinimum: 0,         
+      onUp: () => !animating && goTo(currentIndex.value + 1),   
       onDown: () => !animating && goTo(currentIndex.value - 1), 
       allowClicks: true, 
       ignore: ".menu-button, .rolling-link"
@@ -219,24 +208,94 @@ onUnmounted(() => {
 <style scoped>
 .viewport { position: fixed; inset: 0; width: 100vw; height: 100dvh; overflow: hidden !important; touch-action: none; background-color: #ffc200; }
 .container { position: relative; width: 100vw; height: 700dvh; will-change: transform; backface-visibility: hidden; }
-.panel { position: absolute; width: 100vw; height: 100dvh; left: 0; transform-origin: center center; overflow: hidden; display: flex; align-items: center; justify-content: center; will-change: transform, scale; }
-
-.panel:nth-child(1) { top: 0dvh; z-index: 50; }
+.panel { position: absolute; width: 100vw; height: 100dvh; top: 0; left: 0; transform-origin: center center; overflow: hidden; display: flex; align-items: center; justify-content: center; will-change: transform, scale; }
+.panel:nth-child(1) { top: 0dvh; z-index: 50; transform: scale(1) !important; }
 .panel:nth-child(2) { top: 100dvh; }
 .panel:nth-child(3) { top: 200dvh; }
 .panel:nth-child(4) { top: 300dvh; }
 .panel:nth-child(5) { top: 400dvh; }
 .panel:nth-child(6) { top: 500dvh; }
-.panel:nth-child(7) { top: 600dvh; z-index: 50; }
+.panel:nth-child(7) { top: 600dvh; transform: scale(1) !important; }
 
-.scroll-shield { position: fixed; inset: 0; z-index: 8500; background: transparent; }
-.site-header-top { position: fixed; top: 0; left: 0; width: 100%; z-index: 9999 !important; pointer-events: none; }
-.site-header-top :deep(.menu-button), .site-header-top :deep(.rolling-link) { pointer-events: auto !important; }
+.scroll-shield { 
+  position: fixed; 
+  inset: 0; 
+  z-index: 8500; 
+  background: transparent; 
+}
 
-.section-title-mask { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: hidden; z-index: 10; width: 100vw; display: flex; justify-content: center; align-items: center; text-align: center; }
-.section-title-text { display: inline-block; font-size: var(--section-title-size); font-family: 'Druk Text Cyr Heavy', sans-serif; font-weight: 500; letter-spacing: -0.05em; text-transform: uppercase; color: #ffc200; line-height: 1; transform: translateY(100%); opacity: 0; white-space: nowrap; }
-.section-caption-mask { pointer-events: none; position: absolute; bottom: 8dvh; left: 50%; transform: translateX(-50%); overflow: hidden; z-index: 10; width: 100vw; text-align: center; }
-.section-caption-text { display: inline-block; font-size: 1.5vw; font-family: 'CanelaCustom', serif !important; font-weight: 700; font-style: italic; color: #ffc200; transform: translateY(100%); opacity: 0; white-space: nowrap; line-height: 1.1; }
+.site-header-top { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index: 9999 !important; 
+  pointer-events: none; 
+}
+
+.site-header-top :deep(.menu-button), 
+.site-header-top :deep(.rolling-link) { 
+  pointer-events: auto !important; 
+}
+
+/* Modal must be above the shield and header */
+:deep(.video-modal-container) {
+  z-index: 10001 !important;
+}
+
+.section-title-mask { 
+  pointer-events: none; 
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  overflow: hidden; 
+  z-index: 10; 
+  width: 100vw; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
+}
+
+.section-title-text { 
+  display: inline-block; 
+  font-size: var(--section-title-size); 
+  font-family: 'Druk Text Cyr Heavy', sans-serif; 
+  font-weight: 500; 
+  letter-spacing: -0.05em; 
+  text-transform: uppercase; 
+  color: #ffc200; 
+  line-height: 1; 
+  transform: translateY(100%); 
+  opacity: 0; 
+  white-space: nowrap;
+}
+
+.section-caption-mask { 
+  pointer-events: none; 
+  position: absolute; 
+  bottom: 8dvh; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  overflow: hidden; 
+  z-index: 10; 
+  width: 100vw; 
+  text-align: center; 
+}
+
+.section-caption-text { 
+  display: inline-block; 
+  font-size: 1.5vw; 
+  font-family: 'CanelaCustom', serif !important; 
+  font-weight: 700; 
+  font-style: italic; 
+  color: #ffc200; 
+  transform: translateY(100%); 
+  opacity: 0; 
+  white-space: nowrap; 
+  line-height: 1.1; 
+}
 
 @media (max-width: 850px) { 
   .section-caption-text { font-size: 5vw; white-space: normal; line-height: 1.2; } 
