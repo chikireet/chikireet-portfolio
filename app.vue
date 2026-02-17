@@ -1,8 +1,13 @@
 <template>
   <NuxtLayout>
     <NuxtPage />
+    <SpeedInsights />
   </NuxtLayout>
 </template>
+
+<script setup>
+import { SpeedInsights } from "@vercel/speed-insights/nuxt"
+</script>
 
 <style>
 html {
@@ -43,7 +48,7 @@ body {
 }
 
 /* Ensure all panels and the main viewport respond to the 
-   dynamic height changes when the address bar slides away.
+    dynamic height changes when the address bar slides away.
 */
 .viewport, .panel {
   height: 100dvh !important;
