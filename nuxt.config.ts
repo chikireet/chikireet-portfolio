@@ -34,10 +34,11 @@ export default defineNuxtConfig({
   components: true,
   css: ['@/assets/css/fonts.css'],
   
-  modules: [
-    '@nuxtjs/tailwindcss', 
-    '@nuxt/image'
-  ],
+ modules: [
+  '@nuxtjs/tailwindcss',
+  '@nuxt/image',
+  '@vercel/speed-insights/nuxt'
+],
   
   image: { 
     format: ['webp', 'avif', 'jpeg'], 
