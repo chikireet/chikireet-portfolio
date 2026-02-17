@@ -26,7 +26,7 @@
         v-for="(videoId, index) in videoIds"
         :key="videoId"
         class="panel video-panel"
-        :ref="(el) => { if (el) sectionRefs[index] = el }"
+        :ref="el => setRef(el, sectionRefs, index)"
         :style="{ top: (index + 1) * 100 + 'dvh' }"
       >
         <component 
@@ -36,17 +36,17 @@
         />
         
         <div class="section-title-mask">
-          <span class="section-title-text" v-html="titles[index + 1]" :ref="(el) => { if (el) titleRefs[index] = el }" />
+          <span class="section-title-text" v-html="titles[index + 1]" :ref="el => setRef(el, titleRefs, index)" />
         </div>
 
         <div class="section-caption-mask">
-          <span class="section-caption-text" v-html="captions[index]" :ref="(el) => { if (el) captionRefs[index] = el }" />
+          <span class="section-caption-text" v-html="captions[index]" :ref="el => setRef(el, captionRefs, index)" />
         </div>
       </div>
     
       <StoryFirstSection 
-        class="panel story-panel"
-        :style="{ top: (videoIds.length + 1) * 100 + 'dvh', z-index: 10 }" 
+        class="panel story-panel" 
+        :style="{ top: (videoIds.length + 1) * 100 + 'dvh', z-index: 10 }"
         :activate-carousel="showCarousel" 
       />
     </div>
@@ -65,11 +65,13 @@
 import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent } from 'vue'
 import gsap from 'gsap'
 
+// SEO
 useSeoMeta({
   title: 'Yevhen Pereverziev | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
 })
 
+// Async Components
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
 const StoryFirstSection = defineAsyncComponent(() => import('@/components/StoryFirstSection.vue'))
 const SiteHeader = defineAsyncComponent(() => import('@/components/SiteHeader.vue'))
@@ -83,6 +85,7 @@ const videoSections = [
   defineAsyncComponent(() => import('@/components/VideoSection5.vue'))
 ]
 
+// State
 const container = ref(null)
 const currentIndex = ref(0)
 const total = 7
@@ -95,15 +98,25 @@ const activeCaption = ref('')
 const logoVisible = ref(false)
 const showCarousel = ref(false)
 
+// Content
 const videoIds = ['1158028099', '1158027631', '1134782625', '1158824495', '1158583072']
 const titles = ['', 'ALTERED STATE', 'JORDAN', 'RNR IS ASLEEP', 'PHANTOM', 'T T C']
 const captions = ['Othership<br>Commercial', 'BinBaz<br>Travel Video', 'ROMES<br>Music Video', 'Trailer<br>Short Film', 'TTC<br>Creative Project']
 
+// Ref Arrays
 const sectionRefs = ref([])
 const titleRefs = ref([])
 const captionRefs = ref([])
 let lastIndex = 0
 
+// Helper function to solve the Vercel Build Error
+const setRef = (el, refArray, index) => {
+  if (el) {
+    refArray.value[index] = el
+  }
+}
+
+// Logic
 const isAboutOrVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 6)
 const isActualVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 5)
 
@@ -129,6 +142,7 @@ const handleShieldClick = () => {
   } 
 }
 
+// Animations
 function animateTitle(index) {
   const title = titleRefs.value[index - 1]; if (!title) return;
   const direction = index > lastIndex ? 1 : -1;
@@ -159,22 +173,11 @@ const goTo = async (index) => {
   
   currentIndex.value = index;
   const vh = window.innerHeight; 
-  const tl = gsap.timeline({ 
-    onComplete: () => { 
-      animating = false; 
-      if (currentIndex.value === 6) showCarousel.value = true; 
-    } 
-  });
+  const tl = gsap.timeline({ onComplete: () => { animating = false; if (currentIndex.value === 6) showCarousel.value = true; } });
   
-  if (currentIndex.value !== 0 && currentIndex.value !== 6) {
-    tl.to(currentPanel, { scale: 0.5, duration: 0.9, ease: 'power2.inOut' });
-  }
-  
+  if (currentIndex.value !== 0 && currentIndex.value !== 6) tl.to(currentPanel, { scale: 0.5, duration: 0.9, ease: 'power2.inOut' });
   tl.to(container.value, { y: -index * vh, duration: 0.9, ease: 'power4.inOut' }, '<');
-  
-  if (index !== 0 && index !== 6) {
-    tl.to(nextPanel, { scale: 1, duration: 1.5, ease: 'power3.inOut' }, '<');
-  }
+  if (index !== 0 && index !== 6) tl.to(nextPanel, { scale: 1, duration: 1.5, ease: 'power3.inOut' }, '<');
 };
 
 const updateLogoSize = () => { 
@@ -184,6 +187,7 @@ const updateLogoSize = () => {
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
 }
 
+// Lifecycle
 onMounted(() => {
   if (typeof window === 'undefined') return;
   updateLogoSize(); 
@@ -201,8 +205,7 @@ onMounted(() => {
   }
   
   import('gsap/Observer').then((m) => {
-    const Observer = m.default; 
-    gsap.registerPlugin(Observer);
+    const Observer = m.default; gsap.registerPlugin(Observer);
     mainObserver = Observer.create({
       target: window, 
       type: 'wheel,touch,pointer', 
@@ -231,15 +234,6 @@ onUnmounted(() => {
 .viewport { position: fixed; inset: 0; width: 100vw; height: 100dvh; overflow: hidden !important; touch-action: none; background-color: #ffc200; }
 .container { position: relative; width: 100vw; height: 700dvh; will-change: transform; backface-visibility: hidden; }
 .panel { position: absolute; width: 100vw; height: 100dvh; top: 0; left: 0; transform-origin: center center; overflow: hidden; display: flex; align-items: center; justify-content: center; will-change: transform, scale; }
-
-/* Panel sequencing */
-.panel:nth-child(1) { top: 0dvh; z-index: 50; }
-.panel:nth-child(2) { top: 100dvh; }
-.panel:nth-child(3) { top: 200dvh; }
-.panel:nth-child(4) { top: 300dvh; }
-.panel:nth-child(5) { top: 400dvh; }
-.panel:nth-child(6) { top: 500dvh; }
-.panel:nth-child(7) { top: 600dvh; z-index: 10; }
 
 .scroll-shield { position: fixed; inset: 0; z-index: 8500; background: transparent; }
 .site-header-top { position: fixed; top: 0; left: 0; width: 100%; z-index: 9999 !important; pointer-events: none; }
