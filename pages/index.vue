@@ -26,7 +26,7 @@
         v-for="(videoId, index) in videoIds"
         :key="videoId"
         class="panel video-panel"
-        :ref="el => setRef(el, sectionRefs, index)"
+        :ref="(el) => setSectionRef(el, index)"
         :style="{ top: (index + 1) * 100 + 'dvh' }"
       >
         <component 
@@ -36,11 +36,11 @@
         />
         
         <div class="section-title-mask">
-          <span class="section-title-text" v-html="titles[index + 1]" :ref="el => setRef(el, titleRefs, index)" />
+          <span class="section-title-text" v-html="titles[index + 1]" :ref="(el) => setTitleRef(el, index)" />
         </div>
 
         <div class="section-caption-mask">
-          <span class="section-caption-text" v-html="captions[index]" :ref="el => setRef(el, captionRefs, index)" />
+          <span class="section-caption-text" v-html="captions[index]" :ref="(el) => setCaptionRef(el, index)" />
         </div>
       </div>
     
@@ -65,13 +65,11 @@
 import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent } from 'vue'
 import gsap from 'gsap'
 
-// SEO
 useSeoMeta({
   title: 'Yevhen Pereverziev | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
 })
 
-// Async Components
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
 const StoryFirstSection = defineAsyncComponent(() => import('@/components/StoryFirstSection.vue'))
 const SiteHeader = defineAsyncComponent(() => import('@/components/SiteHeader.vue'))
@@ -85,7 +83,6 @@ const videoSections = [
   defineAsyncComponent(() => import('@/components/VideoSection5.vue'))
 ]
 
-// State
 const container = ref(null)
 const currentIndex = ref(0)
 const total = 7
@@ -98,25 +95,20 @@ const activeCaption = ref('')
 const logoVisible = ref(false)
 const showCarousel = ref(false)
 
-// Content
 const videoIds = ['1158028099', '1158027631', '1134782625', '1158824495', '1158583072']
 const titles = ['', 'ALTERED STATE', 'JORDAN', 'RNR IS ASLEEP', 'PHANTOM', 'T T C']
 const captions = ['Othership<br>Commercial', 'BinBaz<br>Travel Video', 'ROMES<br>Music Video', 'Trailer<br>Short Film', 'TTC<br>Creative Project']
 
-// Ref Arrays
 const sectionRefs = ref([])
 const titleRefs = ref([])
 const captionRefs = ref([])
 let lastIndex = 0
 
-// Helper function to solve the Vercel Build Error
-const setRef = (el, refArray, index) => {
-  if (el) {
-    refArray.value[index] = el
-  }
-}
+// Production-safe ref setters
+const setSectionRef = (el, index) => { if (el) sectionRefs.value[index] = el }
+const setTitleRef = (el, index) => { if (el) titleRefs.value[index] = el }
+const setCaptionRef = (el, index) => { if (el) captionRefs.value[index] = el }
 
-// Logic
 const isAboutOrVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 6)
 const isActualVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 5)
 
@@ -142,7 +134,6 @@ const handleShieldClick = () => {
   } 
 }
 
-// Animations
 function animateTitle(index) {
   const title = titleRefs.value[index - 1]; if (!title) return;
   const direction = index > lastIndex ? 1 : -1;
@@ -187,7 +178,6 @@ const updateLogoSize = () => {
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
 }
 
-// Lifecycle
 onMounted(() => {
   if (typeof window === 'undefined') return;
   updateLogoSize(); 
