@@ -33,7 +33,13 @@ export default defineNuxtConfig({
 
   components: true,
   css: ['@/assets/css/fonts.css'],
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
+  
+  // ADDED: Speed Insights module included in the modules array
+  modules: [
+    '@nuxtjs/tailwindcss', 
+    '@nuxt/image', 
+    '@vercel/speed-insights/nuxt'
+  ],
   
   image: { 
     format: ['webp', 'avif', 'jpeg'], 
