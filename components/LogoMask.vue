@@ -114,7 +114,7 @@ const updateSize = () => {
   } else {
     finalScale = isMobile ? 0.28 : 0.45
     // FIX: Using dynamic calculation to keep logo below notch
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 35 : 30))
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 37 : 30))
 
     scale.value = finalScale
     translateY.value = finalTranslateY
