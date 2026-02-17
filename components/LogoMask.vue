@@ -98,24 +98,33 @@ const updateSize = () => {
   if (typeof window === 'undefined') return
 
   viewportWidth.value = window.innerWidth
-  // FIX: Using innerHeight ensures centering regardless of address bar state
   viewportHeight.value = window.innerHeight 
   cx.value = viewportWidth.value / 2
   cy.value = viewportHeight.value / 2
 
-  const scaleW = viewportWidth.value / originalWidth
-  const scaleH = viewportHeight.value / originalHeight
-
   const isMobile = viewportWidth.value <= 850
   
+  // Header Logo Sync Logic
+  /**
+   * Desktop Target: 150px (Scale: 150/360 = 0.4166)
+   * Mobile Target: 100px (Scale: 100/360 = 0.2777)
+   */
+  finalScale = isMobile ? (100 / 360) : (150 / 360)
+
+  /**
+   * Header top positions: Desktop 23px, Mobile 11px
+   * We calculate translateY based on half viewport height
+   */
+  const scaledHeight = originalHeight * finalScale
+  const topOffset = isMobile ? 11 : 23
+  finalTranslateY = -(viewportHeight.value / 2 - (topOffset + (scaledHeight / 2)))
+
   if (!animationCompleted.value) {
+    const scaleW = viewportWidth.value / originalWidth
+    const scaleH = viewportHeight.value / originalHeight
     scale.value = Math.min(scaleW, scaleH) * 0.95
     translateY.value = 0
   } else {
-    finalScale = isMobile ? 0.28 : 0.45
-    // FIX: Using dynamic calculation to keep logo below notch
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 45 : 30))
-
     scale.value = finalScale
     translateY.value = finalTranslateY
   }
@@ -131,16 +140,10 @@ onMounted(async () => {
   await nextTick()
   isReady.value = true
 
+  // Initial animation setup based on the new synchronized values
   const scaleW = viewportWidth.value / originalWidth
   const scaleH = viewportHeight.value / originalHeight
   const initialScale = Math.min(scaleW, scaleH) * 0.95
-  const isMobile = viewportWidth.value <= 850
-
-  finalScale = isMobile ? 0.278 : 0.415
-  if (finalTranslateY === null) {
-    // FIX: Offset specifically for iPhone top safe areas
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 43))
-  }
 
   scale.value = initialScale
   translateY.value = 0
