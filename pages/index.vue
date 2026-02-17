@@ -33,7 +33,7 @@
           v-if="Math.abs(currentIndex - (index + 1)) <= 1"
           :is="videoSections[index]" 
           :video-id="videoId" 
-          :title="titles[index + 1]"
+          /* REMOVED :title prop to clear the corner text */
         />
         
         <div class="section-title-mask">
@@ -70,7 +70,6 @@ useSeoMeta({
   description: 'Toronto-based Director and Photographer.',
 })
 
-// Async components for better performance
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
 const StoryFirstSection = defineAsyncComponent(() => import('@/components/StoryFirstSection.vue'))
 const SiteHeader = defineAsyncComponent(() => import('@/components/SiteHeader.vue'))
@@ -86,7 +85,7 @@ const videoSections = [
 
 const container = ref(null)
 const currentIndex = ref(0)
-const total = 7 // Hero (1) + Videos (5) + Story (1)
+const total = 7 
 let animating = false
 let mainObserver = null
 const isModalOpen = ref(false)
@@ -222,7 +221,6 @@ onUnmounted(() => {
 .container { position: relative; width: 100vw; height: 700dvh; will-change: transform; backface-visibility: hidden; }
 .panel { position: absolute; width: 100vw; height: 100dvh; left: 0; transform-origin: center center; overflow: hidden; display: flex; align-items: center; justify-content: center; will-change: transform, scale; }
 
-/* Dynamic positioning for panels */
 .panel:nth-child(1) { top: 0dvh; z-index: 50; }
 .panel:nth-child(2) { top: 100dvh; }
 .panel:nth-child(3) { top: 200dvh; }
@@ -235,7 +233,6 @@ onUnmounted(() => {
 .site-header-top { position: fixed; top: 0; left: 0; width: 100%; z-index: 9999 !important; pointer-events: none; }
 .site-header-top :deep(.menu-button), .site-header-top :deep(.rolling-link) { pointer-events: auto !important; }
 
-/* Masking and Typography */
 .section-title-mask { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); overflow: hidden; z-index: 10; width: 100vw; display: flex; justify-content: center; align-items: center; text-align: center; }
 .section-title-text { display: inline-block; font-size: var(--section-title-size); font-family: 'Druk Text Cyr Heavy', sans-serif; font-weight: 500; letter-spacing: -0.05em; text-transform: uppercase; color: #ffc200; line-height: 1; transform: translateY(100%); opacity: 0; white-space: nowrap; }
 .section-caption-mask { pointer-events: none; position: absolute; bottom: 8dvh; left: 50%; transform: translateX(-50%); overflow: hidden; z-index: 10; width: 100vw; text-align: center; }
