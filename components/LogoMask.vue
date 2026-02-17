@@ -137,12 +137,17 @@ onMounted(async () => {
   const initialScale = Math.min(scaleW, scaleH) * 0.95
   const isMobile = viewportWidth.value <= 850
 
-  // Standardize finalScale to match the 120px target
-  finalScale = isMobile ? 0.333 : 0.415
-  if (finalTranslateY === null) {
-    // Standardize offset to match the 14px targetTop
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 33.3 : 43))
-  }
+if (isMobile) {
+  // 160px (initialWidth) / 360px (originalWidth) = 0.444
+  finalScale = 0.444 
+  
+  // Recalculate offset for the 160px size:
+  // targetTop (approx 32px for 'top-8') + half of 160px scaled height (25.7px)
+  finalTranslateY = -(viewportHeight.value / 2 - 57.7) 
+} else {
+  finalScale = 0.45
+  finalTranslateY = -(viewportHeight.value / 2 - 30)
+}
 
   scale.value = initialScale
   translateY.value = 0
