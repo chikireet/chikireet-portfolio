@@ -23,11 +23,9 @@
   font-family: 'Druk Text Cyr Heavy', sans-serif;
 }
 
-<<<<<<< Updated upstream
 .font-canela {
   font-family: 'CanelaCustom', serif;
 }
-=======
 font-family: 'CanelaCustom'; 
   /* This points exactly to your public/fonts/ folder */
   src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2'); 
@@ -35,4 +33,3 @@ font-family: 'CanelaCustom';
   font-style: italic;
   font-display: swap;
 }
->>>>>>> Stashed changes
