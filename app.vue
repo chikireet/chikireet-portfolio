@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-// FIX: Manual import removed. Nuxt handles this through the modules array.
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 </script>
 
 <style>

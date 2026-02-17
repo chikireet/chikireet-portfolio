@@ -34,12 +34,11 @@ export default defineNuxtConfig({
   components: true,
   css: ['@/assets/css/fonts.css'],
   
-  // FIX: Added @vercel/speed-insights/nuxt to the modules array
-  modules: [
-    '@nuxtjs/tailwindcss', 
-    '@nuxt/image', 
-    '@vercel/speed-insights/nuxt'
-  ],
+ modules: [
+  '@nuxtjs/tailwindcss',
+  '@nuxt/image',
+  '@vercel/speed-insights/nuxt'
+],
   
   image: { 
     format: ['webp', 'avif', 'jpeg'], 
