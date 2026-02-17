@@ -38,7 +38,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss', 
     '@nuxt/image', 
-    '@vercel/speed-insights/nuxt'
   ],
   
   image: { 
