@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { SpeedInsights } from "@vercel/speed-insights/nuxt"
+/* Manual import removed to let the Nuxt module handle resolution */
 </script>
 
 <style>
