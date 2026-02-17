@@ -98,6 +98,7 @@ const updateSize = () => {
   if (typeof window === 'undefined') return
 
   viewportWidth.value = window.innerWidth
+  // FIX: Using innerHeight ensures centering regardless of address bar state
   viewportHeight.value = window.innerHeight 
   cx.value = viewportWidth.value / 2
   cy.value = viewportHeight.value / 2
@@ -111,11 +112,9 @@ const updateSize = () => {
     scale.value = Math.min(scaleW, scaleH) * 0.95
     translateY.value = 0
   } else {
-    // 1. Target width 120px / Original 360px = 0.333 scale
-    finalScale = isMobile ? 0.333 : 0.45 
-    
-    // 2. targetTop (14) + half of scaled height (19.3) = 33.3px offset
-    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 33.3 : 30))
+    finalScale = isMobile ? 0.28 : 0.45
+    // FIX: Using dynamic calculation to keep logo below notch
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 32 : 30))
 
     scale.value = finalScale
     translateY.value = finalTranslateY
@@ -137,17 +136,11 @@ onMounted(async () => {
   const initialScale = Math.min(scaleW, scaleH) * 0.95
   const isMobile = viewportWidth.value <= 850
 
-if (isMobile) {
-  // 160px (initialWidth) / 360px (originalWidth) = 0.444
-  finalScale = 0.444 
-  
-  // Recalculate offset for the 160px size:
-  // targetTop (approx 32px for 'top-8') + half of 160px scaled height (25.7px)
-  finalTranslateY = -(viewportHeight.value / 2 - 57.7) 
-} else {
-  finalScale = 0.45
-  finalTranslateY = -(viewportHeight.value / 2 - 30)
-}
+  finalScale = isMobile ? 0.278 : 0.415
+  if (finalTranslateY === null) {
+    // FIX: Offset specifically for iPhone top safe areas
+    finalTranslateY = -(viewportHeight.value / 2 - (isMobile ? 35 : 43))
+  }
 
   scale.value = initialScale
   translateY.value = 0
