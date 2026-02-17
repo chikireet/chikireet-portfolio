@@ -58,13 +58,15 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent } from 'vue'
-import gsap from 'gsap'
+import { gsap } from 'gsap'
+import { Observer } from 'gsap/Observer'
 
 useSeoMeta({
-  title: 'Yevhen Pereverziev | Director & Photographer',
-  description: 'Toronto-based Director and Photographer.',
+  title: 'Gene Perez | Director & Photographer in Toronto',
+  description: 'Portfolio of Yevhen Pereverziev, a Toronto-based Director and Photographer specializing in cinematic storytelling.',
 })
 
+// Async Components to keep the initial load light
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
 const StoryFirstSection = defineAsyncComponent(() => import('@/components/StoryFirstSection.vue'))
 const SiteHeader = defineAsyncComponent(() => import('@/components/SiteHeader.vue'))
@@ -78,6 +80,7 @@ const videoSections = [
   defineAsyncComponent(() => import('@/components/VideoSection5.vue'))
 ]
 
+// App State
 const container = ref(null)
 const currentIndex = ref(0)
 const total = 7
@@ -99,9 +102,11 @@ const titleRefs = ref([])
 const captionRefs = ref([])
 let lastIndex = 0
 
+// Computed Logic
 const isAboutOrVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 6)
 const isActualVideo = computed(() => currentIndex.value >= 1 && currentIndex.value <= 5)
 
+// Modal Handlers
 const openModal = (id, title, fullCaption) => { 
   activeVideoId.value = id; 
   activeTitle.value = title; 
@@ -124,6 +129,7 @@ const handleShieldClick = () => {
   } 
 }
 
+// GSAP Animation Logic
 function animateTitle(index) {
   const title = titleRefs.value[index - 1]; if (!title) return;
   const direction = index > lastIndex ? 1 : -1;
@@ -140,7 +146,9 @@ function animateCaption(index) {
 const goTo = async (index) => {
   if (index < 0 || index >= total || animating || isModalOpen.value) return;
   animating = true;
-  const panels = container.value.children; const currentPanel = panels[currentIndex.value]; const nextPanel = panels[index];
+  const panels = container.value.children; 
+  const currentPanel = panels[currentIndex.value]; 
+  const nextPanel = panels[index];
   
   if (index !== 0 && index !== 6) { 
     gsap.set(nextPanel, { scale: 0.7 }); animateTitle(index); animateCaption(index); 
@@ -165,9 +173,15 @@ const updateLogoSize = () => {
 }
 
 onMounted(() => {
-  if (typeof window === 'undefined') return;
-  updateLogoSize(); gsap.set(container.value, { y: 0 });
+  if (!process.client) return;
+  
+  // Register GSAP Plugin safely on client-side
+  gsap.registerPlugin(Observer);
+  
+  updateLogoSize(); 
+  gsap.set(container.value, { y: 0 });
 
+  // Auto-scroll logic after intro
   if (window.hasAlreadySeenIntro) {
     logoVisible.value = true;
   } else {
@@ -179,20 +193,18 @@ onMounted(() => {
     }, 8000);
   }
   
-  import('gsap/Observer').then((m) => {
-    const Observer = m.default; gsap.registerPlugin(Observer);
-    mainObserver = Observer.create({
-      target: window, 
-      type: 'wheel,touch,pointer', 
-      preventDefault: false, 
-      wheelSpeed: -1.2, 
-      tolerance: 5,           
-      dragMinimum: 0,         
-      onUp: () => !animating && goTo(currentIndex.value + 1),   
-      onDown: () => !animating && goTo(currentIndex.value - 1), 
-      allowClicks: true, 
-      ignore: ".menu-button, .rolling-link"
-    });
+  // Custom Observer for cinematic snap-scrolling
+  mainObserver = Observer.create({
+    target: window, 
+    type: 'wheel,touch,pointer', 
+    preventDefault: false, 
+    wheelSpeed: -1.2, 
+    tolerance: 5,            
+    dragMinimum: 0,          
+    onUp: () => !animating && goTo(currentIndex.value + 1),    
+    onDown: () => !animating && goTo(currentIndex.value - 1),  
+    allowClicks: true, 
+    ignore: ".menu-button, .rolling-link"
   });
 
   window.addEventListener('resize', updateLogoSize);
@@ -238,7 +250,6 @@ onUnmounted(() => {
   pointer-events: auto !important; 
 }
 
-/* Modal must be above the shield and header */
 :deep(.video-modal-container) {
   z-index: 10001 !important;
 }
