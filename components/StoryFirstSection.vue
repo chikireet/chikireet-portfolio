@@ -46,7 +46,7 @@ defineProps({
   width: 100vw; 
   height: 100dvh !important; 
   left: 0; 
-  top: 0; 
+  /* REMOVE top: 0; */
   z-index: 10; 
   display: flex;
   flex-direction: column;
