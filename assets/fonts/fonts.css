@@ -1,10 +1,14 @@
+/* assets/css/fonts.css */
+
 @font-face {
-  font-family: 'Druk Text Cyr Heavy';
-  src: url('/fonts/DrukTextCyr-Heavy.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
+  font-family: 'CanelaCustom';
+  /* Ensure this path matches your public folder exactly */
+  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
 }
 
-.font-druk {
-  font-family: 'Druk Text Cyr Heavy', sans-serif;
+.font-canela {
+  font-family: 'CanelaCustom', serif;
 }
