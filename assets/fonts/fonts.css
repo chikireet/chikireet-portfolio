@@ -7,18 +7,18 @@
   font-display: swap;
 }
 
-.font-druk {
-  font-family: 'Druk Text Cyr Heavy', sans-serif;
-}
-
 /* 2. Canela Custom */
 @font-face {
   font-family: 'CanelaCustom';
-  /* Ensure this path matches your public folder exactly */
   src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
+} /* This is the bracket at line 35; it MUST have the @font-face { above it */
+
+/* Utility Classes */
+.font-druk {
+  font-family: 'Druk Text Cyr Heavy', sans-serif;
 }
 
 .font-canela {
