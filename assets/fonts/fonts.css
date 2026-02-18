@@ -1,3 +1,4 @@
+cat <<EOF > assets/css/fonts.css
 /* 1. Druk Text Cyr Heavy */
 @font-face {
   font-family: 'Druk Text Cyr Heavy';
@@ -9,8 +10,8 @@
 
 /* 2. Canela Custom */
 @font-face {
-  font-family: 'CanelaCustom'; 
-  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2'); 
+  font-family: 'CanelaCustom';
+  src: url('/fonts/CanelaCondensedBoldItalic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -24,3 +25,4 @@
 .font-canela {
   font-family: 'CanelaCustom', serif;
 }
+EOF
