@@ -28,7 +28,7 @@
                @click="openModal(work.vimeoId, work.title, work.client)">
             
             <video class="preview-video" autoplay muted loop playsinline disablePictureInPicture>
-              <source :src="`/previews/${work.localPreview}`" type="video/mp4">
+              <source :src="`/Previews/${work.localPreview}`" type="video/mp4">
             </video>
 
             <div class="tile-overlay"></div>
