@@ -27,8 +27,17 @@
                class="work-tile group cursor-pointer opacity-0 transform translate-y-10"
                @click="openModal(work.vimeoId, work.title, work.client)">
             
-            <video class="preview-video" autoplay muted loop playsinline disablePictureInPicture>
-              <source :src="`/Previews/${work.localPreview}`" type="video/mp4">
+            <video 
+              class="preview-video" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              preload="metadata"
+              :poster="`/previews/posters/${work.poster}`"
+              disablePictureInPicture
+            >
+              <source :src="`/previews/${work.localPreview}`" type="video/mp4">
             </video>
 
             <div class="tile-overlay"></div>
@@ -52,7 +61,7 @@
                  class="relative group cursor-pointer break-inside-avoid photography-item mb-4 opacity-0 transform translate-y-10">
               <div class="relative overflow-hidden shadow-xl">
                 <div class="absolute inset-0 border-0 group-hover:border-[10px] border-[#ffc200] z-20 pointer-events-none transition-all duration-300"></div>
-                <img :src="photo.url" class="w-full h-auto transition-transform duration-700 ease-in-out group-hover:scale-125 block z-10" />
+                <img :src="photo.url" loading="lazy" class="w-full h-auto transition-transform duration-700 ease-in-out group-hover:scale-125 block z-10" />
               </div>
               <div class="pt-2 pb-4 text-[#ffc200] italic garamond-font text-sm md:text-base">
                 {{ photo.title }}
@@ -106,11 +115,9 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
-// --- SCROLL LOGIC (Window-based) ---
+// --- SCROLL LOGIC ---
 const handleScroll = () => {
-  // Prevent header toggle if modal is open
   if (isModalOpen.value || selectedPhoto.value) return
-  
   const currentScrollY = window.scrollY
   showMenu.value = !(currentScrollY > lastScrollY.value && currentScrollY > 100)
   lastScrollY.value = currentScrollY
@@ -132,26 +139,17 @@ const initScrollAnimations = (selector) => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  nextTick(() => {
-    initScrollAnimations('.work-tile')
-  })
+  nextTick(() => { initScrollAnimations('.work-tile') })
 })
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
 
-// --- MODAL LOGIC ---
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
 }
 
-const closeModal = () => {
-  isModalOpen.value = false;
-  nextTick(() => { activeVideoId.value = ''; activeTitle.value = ''; activeClient.value = ''; });
-}
+const closeModal = () => { isModalOpen.value = false; }
 
-// Watchers
 watch(activeTab, (newTab) => {
   nextTick(() => {
     ScrollTrigger.refresh()
@@ -161,16 +159,16 @@ watch(activeTab, (newTab) => {
 
 // --- CONTENT DATA ---
 const videoWorks = [
-  { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4' },
-  { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4' },
-  { title: 'JORDAN', client: 'BinBaz', type: 'Travel Video', vimeoId: '1158027631', localPreview: 'jordan.mp4' },
-  { title: 'PHANTOM', client: 'Trailer', type: 'Short Film', vimeoId: '1158824495', localPreview: 'the_phantom.mp4' },
-  { title: 'FEEL IT', client: 'Hyundai', type: 'Commercial', vimeoId: '1161371386', localPreview: 'hyundai_feel_it.mp4' },
-  { title: 'SMOOTH X2', client: 'ZHIYUN', type: 'Commercial', vimeoId: '1161369145', localPreview: 'zhiyun_smooth_x2.mp4' },
-  { title: 'TTC', client: 'TTC', type: 'Creative Project', vimeoId: '1158583072', localPreview: 'ttc_if_you_see_something_say_something.mp4' },
-  { title: 'MSLS', client: 'Rosh Posh', type: 'Commercial', vimeoId: '1161372925', localPreview: 'rosh_posh_msls.mp4' },
-  { title: 'ALTERED STATE', client: 'Othership', type: 'Commercial', vimeoId: '1158028099', localPreview: 'chill_your_stress_othership.mp4' },
-  { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4' }
+  { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4', poster: 'othership_freeze_the_momen.webp' },
+  { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4', poster: 'romes_rock_n_roll_is_asleep.webp' },
+  { title: 'JORDAN', client: 'BinBaz', type: 'Travel Video', vimeoId: '1158027631', localPreview: 'jordan.mp4', poster: 'jordan.webp' },
+  { title: 'PHANTOM', client: 'Trailer', type: 'Short Film', vimeoId: '1158824495', localPreview: 'the_phantom.mp4', poster: 'the_phantom.webp' },
+  { title: 'FEEL IT', client: 'Hyundai', type: 'Commercial', vimeoId: '1161371386', localPreview: 'hyundai_feel_it.mp4', poster: 'hyundai_feel_it.webp' },
+  { title: 'SMOOTH X2', client: 'ZHIYUN', type: 'Commercial', vimeoId: '1161369145', localPreview: 'zhiyun_smooth_x2.mp4', poster: 'zhiyun_smooth_x2.webp' },
+  { title: 'TTC', client: 'TTC', type: 'Creative Project', vimeoId: '1158583072', localPreview: 'ttc_if_you_see_something_say_something.mp4', poster: 'ttc_if_you_see_something_say_something.webp' },
+  { title: 'MSLS', client: 'Rosh Posh', type: 'Commercial', vimeoId: '1161372925', localPreview: 'rosh_posh_msls.mp4', poster: 'rosh_posh_msls.webp' },
+  { title: 'ALTERED STATE', client: 'Othership', type: 'Commercial', vimeoId: '1158028099', localPreview: 'chill_your_stress_othership.mp4', poster: 'chill_your_stress_othership.webp' },
+  { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
 ]
 
 const photographyWorks = [
@@ -205,8 +203,6 @@ const photographyWorks = [
 :global(html::-webkit-scrollbar), 
 :global(body::-webkit-scrollbar) {
   display: none !important;
-  width: 0 !important;
-  height: 0 !important;
 }
 
 :global(html), :global(body) {
@@ -215,12 +211,9 @@ const photographyWorks = [
   padding: 0;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  height: auto !important;
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important; /* IE/Edge */
+  scrollbar-width: none !important;
 }
 
-/* UI STYLES */
 .btn-text { position: relative; display: inline-block; }
 .btn-text::after {
   content: ''; position: absolute; top: 55%; left: 0; width: 100%; height: 1.5px;
@@ -229,14 +222,13 @@ const photographyWorks = [
 }
 .group:hover .btn-text::after, .active-tab .btn-text::after { transform: scaleX(1); }
 
-.roboto-tabs { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.05em; color: #ffc200; position: relative; }
+.roboto-tabs { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.05em; color: #ffc200; }
 .active-tab { opacity: 1; }
-.inactive-tab { opacity: 0.4; transition: opacity 0.3s ease; }
-.inactive-tab:hover { opacity: 1; }
+.inactive-tab { opacity: 0.4; }
 
 .preview-video {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; 
-  pointer-events: none; transform: scale(1.01); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease;
 }
 .group:hover .preview-video { transform: scale(1.2); }
 
