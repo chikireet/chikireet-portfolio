@@ -160,8 +160,15 @@ const goTo = async (index) => {
 const updateLogoSize = () => { 
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
-  const titleSize = vw <= 850 ? '11vw' : '10vw';
+  
+  // Precision Desktop alignment (10.15vw)
+  const titleSize = vw <= 850 ? '11vw' : '10.15vw';
+  
+  // Custom letter-spacing to match SVG tracking
+  const letterSpacing = vw <= 850 ? '-0.05em' : '-0.045em';
+
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
+  document.documentElement.style.setProperty('--section-letter-spacing', letterSpacing);
 }
 
 onMounted(() => {
@@ -238,7 +245,6 @@ onUnmounted(() => {
   pointer-events: auto !important; 
 }
 
-/* Modal must be above the shield and header */
 :deep(.video-modal-container) {
   z-index: 10001 !important;
 }
@@ -256,6 +262,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   text-align: center; 
+  backface-visibility: hidden; /* Prevents desktop shimmering */
 }
 
 .section-title-text { 
@@ -263,13 +270,14 @@ onUnmounted(() => {
   font-size: var(--section-title-size); 
   font-family: 'Druk Text Cyr Heavy', sans-serif; 
   font-weight: 500; 
-  letter-spacing: -0.05em; 
+  letter-spacing: var(--section-letter-spacing); 
   text-transform: uppercase; 
   color: #ffc200; 
-  line-height: 1; 
+  line-height: 0.85; /* Aligns text mask vertically with SVG logo path */
   transform: translateY(100%); 
   opacity: 0; 
   white-space: nowrap;
+  will-change: transform, opacity;
 }
 
 .section-caption-mask { 
