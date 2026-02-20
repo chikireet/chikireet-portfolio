@@ -106,7 +106,7 @@ const updateSize = () => {
   
   // 1. MATCH HEADER LOGO SCALE
   // Header is 100px (Mobile) / 150px (Desktop). Original SVG width is 360.
-  finalScale = isMobile ? (100 / 360) : (140 / 360)
+  finalScale = isMobile ? (100 / 360) : (145 / 360)
 
   // 2. MATCH HEADER LOGO POSITION
   // Header top is 11px (Mobile) / 23px (Desktop).
