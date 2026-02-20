@@ -110,7 +110,7 @@ const updateSize = () => {
   const desktopTop   = 19   // Final distance from top edge in pixels on desktop
   
   const mobileWidth  = 100  // Final width in pixels on mobile
-  const mobileTop    = 11   // Final distance from top edge in pixels on mobile
+  const mobileTop    = 14   // Final distance from top edge in pixels on mobile
   // ---------------------------
 
   // 1. Calculate Scale based on chosen width
