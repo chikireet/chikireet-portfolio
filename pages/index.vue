@@ -160,15 +160,9 @@ const goTo = async (index) => {
 const updateLogoSize = () => { 
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
-  
-  // Precision Desktop alignment (10.15vw)
+  // Restored: Desktop Aligned size (10vw)
   const titleSize = vw <= 850 ? '11vw' : '10vw';
-  
-  // Custom letter-spacing to match SVG tracking
-  const letterSpacing = vw <= 850 ? '-0.05em' : '-0.045em';
-
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
-  document.documentElement.style.setProperty('--section-letter-spacing', letterSpacing);
 }
 
 onMounted(() => {
@@ -254,7 +248,7 @@ onUnmounted(() => {
   position: absolute; 
   top: 50%; 
   left: 50%; 
-  transform: translate(-48%, -50%); 
+  transform: translate(-50%, -50%); 
   overflow: hidden; 
   z-index: 10; 
   width: 100vw; 
@@ -262,7 +256,6 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   text-align: center; 
-  backface-visibility: hidden; /* Prevents desktop shimmering */
 }
 
 .section-title-text { 
@@ -270,14 +263,13 @@ onUnmounted(() => {
   font-size: var(--section-title-size); 
   font-family: 'Druk Text Cyr Heavy', sans-serif; 
   font-weight: 500; 
-  letter-spacing: var(--section-letter-spacing); 
+  letter-spacing: -0.05em; 
   text-transform: uppercase; 
   color: #ffc200; 
-  line-height: 0.85; /* Aligns text mask vertically with SVG logo path */
+  line-height: 1; /* Match header SVG bounding box */
   transform: translateY(100%); 
   opacity: 0; 
   white-space: nowrap;
-  will-change: transform, opacity;
 }
 
 .section-caption-mask { 
