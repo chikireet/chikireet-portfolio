@@ -161,13 +161,11 @@ const updateLogoSize = () => {
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
   
-  // 1. Calculate the exact pixel size to match the SiteHeader
-  // SiteHeader is 150px on desktop, 100px on mobile.
+  // 1. Calculate EXACT pixel width to match the SVG in SiteHeader
   const targetWidth = vw <= 850 ? 100 : 150;
   
-  // 2. Instead of vw, we set the font-size in pixels
-  // We use 1.02 multiplier because Druk text renders slightly smaller than SVG paths
-  const titleSize = `${targetWidth * 1.02}px`;
+  // 2. Set pixel size. 1.05 multiplier ensures the Druk weight matches the SVG path thickness
+  const titleSize = `${targetWidth * 1.05}px`;
   
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
 }
@@ -218,19 +216,9 @@ onUnmounted(() => {
 .container { position: relative; width: 100vw; height: 700dvh; will-change: transform; backface-visibility: hidden; }
 .panel { position: absolute; width: 100vw; height: 100dvh; top: 0; left: 0; transform-origin: center center; overflow: hidden; display: flex; align-items: center; justify-content: center; will-change: transform, scale; }
 .panel:nth-child(1) { top: 0dvh; z-index: 50; transform: scale(1) !important; }
-.panel:nth-child(2) { top: 100dvh; }
-.panel:nth-child(3) { top: 200dvh; }
-.panel:nth-child(4) { top: 300dvh; }
-.panel:nth-child(5) { top: 400dvh; }
-.panel:nth-child(6) { top: 500dvh; }
 .panel:nth-child(7) { top: 600dvh; transform: scale(1) !important; }
 
-.scroll-shield { 
-  position: fixed; 
-  inset: 0; 
-  z-index: 8500; 
-  background: transparent; 
-}
+.scroll-shield { position: fixed; inset: 0; z-index: 8500; background: transparent; }
 
 .site-header-top { 
   position: fixed; 
@@ -246,23 +234,26 @@ onUnmounted(() => {
   pointer-events: auto !important; 
 }
 
-:deep(.video-modal-container) {
-  z-index: 10001 !important;
-}
-
+/* FIXED POSITIONING FOR MASK
+   This ensures the mask stays at the top coordinate 
+   regardless of the video panel's scaling.
+*/
 .section-title-mask { 
   pointer-events: none; 
-  position: absolute; 
-  top: 50%; 
+  position: fixed; 
+  top: 23px; /* Exact Desktop Top Position */
   left: 50%; 
-  transform: translate(-50%, -50%); 
-  overflow: hidden; 
-  z-index: 10; 
+  transform: translateX(-50%); 
+  z-index: 9000; 
   width: 100vw; 
   display: flex;
   justify-content: center;
-  align-items: center;
-  text-align: center; 
+  overflow: hidden;
+  height: 120px;
+}
+
+@media (max-width: 850px) { 
+  .section-title-mask { top: 11px; } /* Exact Mobile Top Position */
 }
 
 .section-title-text { 
@@ -270,11 +261,11 @@ onUnmounted(() => {
   font-size: var(--section-title-size); 
   font-family: 'Druk Text Cyr Heavy', sans-serif; 
   font-weight: 500; 
-  letter-spacing: var(--section-letter-spacing); 
+  letter-spacing: -0.05em; 
   text-transform: uppercase; 
   color: #ffc200; 
-  /* Adjusted line-height to 0.85 to center baseline with SVG path */
-  line-height: 0.85; 
+  /* 0.72 removes the vertical leading (whitespace) built into the font file */
+  line-height: 0.72; 
   transform: translateY(100%); 
   opacity: 0; 
   white-space: nowrap;
@@ -307,7 +298,6 @@ onUnmounted(() => {
 
 @media (max-width: 850px) { 
   .section-caption-text { font-size: 5vw; white-space: normal; line-height: 1.2; } 
-  .section-title-text { font-size: 11vw; } 
 }
 
 :global(html), :global(body) { background-color: #ffc200; overflow: hidden; height: 100dvh; }
