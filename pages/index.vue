@@ -160,9 +160,14 @@ const goTo = async (index) => {
 const updateLogoSize = () => { 
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
-  // Restored: Desktop Aligned size (10vw)
-  const titleSize = vw <= 850 ? '11vw' : '10vw';
+  
+  // Adjusted: Desktop Aligned size (10.15vw) and Mobile (11vw)
+  // These variables ensure the section masks and header logo are consistent
+  const titleSize = vw <= 850 ? '11vw' : '10.15vw';
+  const letterSpacing = vw <= 850 ? '-0.05em' : '-0.045em';
+
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
+  document.documentElement.style.setProperty('--section-letter-spacing', letterSpacing);
 }
 
 onMounted(() => {
@@ -263,10 +268,11 @@ onUnmounted(() => {
   font-size: var(--section-title-size); 
   font-family: 'Druk Text Cyr Heavy', sans-serif; 
   font-weight: 500; 
-  letter-spacing: -0.05em; 
+  letter-spacing: var(--section-letter-spacing); 
   text-transform: uppercase; 
   color: #ffc200; 
-  line-height: 1; /* Match header SVG bounding box */
+  /* Adjusted line-height to 0.85 to center baseline with SVG path */
+  line-height: 0.85; 
   transform: translateY(100%); 
   opacity: 0; 
   white-space: nowrap;
