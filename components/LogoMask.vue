@@ -107,7 +107,7 @@ const updateSize = () => {
   // --- PRECISION CONTROLS ---
   // Adjust these specific numbers to nudge the logo for the perfect match
   const desktopWidth = 145  // Final width in pixels on desktop
-  const desktopTop   = 23   // Final distance from top edge in pixels on desktop
+  const desktopTop   = 20   // Final distance from top edge in pixels on desktop
   
   const mobileWidth  = 100  // Final width in pixels on mobile
   const mobileTop    = 11   // Final distance from top edge in pixels on mobile
