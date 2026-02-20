@@ -283,7 +283,7 @@ onUnmounted(() => {
 .section-caption-mask { 
   pointer-events: none; 
   position: absolute; 
-  bottom: 4dvh; 
+  bottom: 3dvh; 
   left: 50%; 
   transform: translateX(-50%); 
   overflow: hidden; 
