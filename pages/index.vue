@@ -162,7 +162,7 @@ const updateLogoSize = () => {
   const vw = window.innerWidth; 
   
   // Precision Desktop alignment (10.15vw)
-  const titleSize = vw <= 850 ? '11vw' : '10.15vw';
+  const titleSize = vw <= 850 ? '11vw' : '10vw';
   
   // Custom letter-spacing to match SVG tracking
   const letterSpacing = vw <= 850 ? '-0.05em' : '-0.045em';
