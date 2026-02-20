@@ -72,7 +72,7 @@ onMounted(() => {
 
 .logo-center-nudge {
   /* calc(-50% is standard centering, -2px pushes it left) */
-  transform: translateX(calc(-50% - 1px));
+  transform: translateX(calc(-50%));
 }
 
 .btn-text { position: relative; display: inline-block; }
