@@ -104,19 +104,16 @@ const updateSize = () => {
 
   const isMobile = viewportWidth.value <= 850
   
-  // Header Logo Sync Logic
-  /**
-   * Desktop Target: 150px (Scale: 150/360 = 0.4166)
-   * Mobile Target: 100px (Scale: 100/360 = 0.2777)
-   */
+  // 1. MATCH HEADER LOGO SCALE
+  // Header is 100px (Mobile) / 150px (Desktop). Original SVG width is 360.
   finalScale = isMobile ? (100 / 360) : (150 / 360)
 
-  /**
-   * Header top positions: Desktop 23px, Mobile 11px
-   * We calculate translateY based on half viewport height
-   */
+  // 2. MATCH HEADER LOGO POSITION
+  // Header top is 11px (Mobile) / 23px (Desktop).
   const scaledHeight = originalHeight * finalScale
-  const topOffset = isMobile ? 15 : 23
+  const topOffset = isMobile ? 11 : 23 
+  
+  // Calculate translateY so the logo lands exactly at topOffset from the top edge
   finalTranslateY = -(viewportHeight.value / 2 - (topOffset + (scaledHeight / 2)))
 
   if (!animationCompleted.value) {
@@ -140,7 +137,6 @@ onMounted(async () => {
   await nextTick()
   isReady.value = true
 
-  // Initial animation setup based on the new synchronized values
   const scaleW = viewportWidth.value / originalWidth
   const scaleH = viewportHeight.value / originalHeight
   const initialScale = Math.min(scaleW, scaleH) * 0.95
@@ -161,5 +157,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Scoped styles remain clean as positioning is SVG-based */
+/* SVG positioning logic ensures no jump between static and animated logo */
 </style>
