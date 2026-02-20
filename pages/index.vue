@@ -161,13 +161,15 @@ const updateLogoSize = () => {
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
   
-  // Adjusted: Desktop Aligned size (10.15vw) and Mobile (11vw)
-  // These variables ensure the section masks and header logo are consistent
-  const titleSize = vw <= 850 ? '11vw' : '10.15vw';
-  const letterSpacing = vw <= 850 ? '-0.05em' : '-0.045em';
-
+  // 1. Calculate the exact pixel size to match the SiteHeader
+  // SiteHeader is 150px on desktop, 100px on mobile.
+  const targetWidth = vw <= 850 ? 100 : 150;
+  
+  // 2. Instead of vw, we set the font-size in pixels
+  // We use 1.02 multiplier because Druk text renders slightly smaller than SVG paths
+  const titleSize = `${targetWidth * 1.02}px`;
+  
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
-  document.documentElement.style.setProperty('--section-letter-spacing', letterSpacing);
 }
 
 onMounted(() => {
