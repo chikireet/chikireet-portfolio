@@ -104,24 +104,34 @@ const updateSize = () => {
 
   const isMobile = viewportWidth.value <= 850
   
-  // 1. MATCH HEADER LOGO SCALE
-  // Header is 100px (Mobile) / 150px (Desktop). Original SVG width is 360.
-  finalScale = isMobile ? (100 / 360) : (150 / 360)
-
-  // 2. MATCH HEADER LOGO POSITION
-  // Header top is 11px (Mobile) / 23px (Desktop).
-  const scaledHeight = originalHeight * finalScale
-  const topOffset = isMobile ? 11 : 23 
+  // --- PRECISION CONTROLS ---
+  // Adjust these specific numbers to nudge the logo for the perfect match
+  const desktopWidth = 150  // Final width in pixels on desktop
+  const desktopTop   = 23   // Final distance from top edge in pixels on desktop
   
-  // Calculate translateY so the logo lands exactly at topOffset from the top edge
-  finalTranslateY = -(viewportHeight.value / 2 - (topOffset + (scaledHeight / 2)))
+  const mobileWidth  = 100  // Final width in pixels on mobile
+  const mobileTop    = 11   // Final distance from top edge in pixels on mobile
+  // ---------------------------
+
+  // 1. Calculate Scale based on chosen width
+  const targetWidth = isMobile ? mobileWidth : desktopWidth
+  finalScale = targetWidth / originalWidth
+
+  // 2. Calculate Position based on chosen top offset
+  const targetTop = isMobile ? mobileTop : desktopTop
+  const scaledHeight = originalHeight * finalScale
+  
+  // Math: Move from center to top edge, then push down by targetTop and half the logo height
+  finalTranslateY = -(viewportHeight.value / 2 - (targetTop + (scaledHeight / 2)))
 
   if (!animationCompleted.value) {
     const scaleW = viewportWidth.value / originalWidth
     const scaleH = viewportHeight.value / originalHeight
+    // Initial intro size
     scale.value = Math.min(scaleW, scaleH) * 0.95
     translateY.value = 0
   } else {
+    // Lock into final landing position
     scale.value = finalScale
     translateY.value = finalTranslateY
   }
@@ -157,5 +167,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* SVG positioning logic ensures no jump between static and animated logo */
+/* Positioning is managed via JS calculation for pixel-perfection */
 </style>
