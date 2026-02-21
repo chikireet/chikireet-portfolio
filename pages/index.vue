@@ -63,7 +63,7 @@ import gsap from 'gsap'
 useSeoMeta({
   title: 'Gene Perez | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
-  ogImage: '/share-preview3.webp',
+  ogImage: '/share-preview.webp',
 })
 
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
