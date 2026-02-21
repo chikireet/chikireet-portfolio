@@ -16,7 +16,7 @@ export default defineNuxtConfig({
           content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
         },
         { name: 'description', content: 'Award-winning visual storytelling and cinematic photography for global brands, based in Toronto.' },
-        { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
+        { property: 'og:title', content: 'Gene Perez – Director & Photographer | Toronto' },
         { property: 'og:type', content: 'website' }
       ],
       link: [
