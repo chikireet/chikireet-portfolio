@@ -56,19 +56,17 @@
                  class="photography-item relative group cursor-pointer break-inside-avoid mb-4 opacity-0 transform translate-y-10"
                  @click="selectedPhoto = photo">
               
-              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[200px]">
-                
+              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[300px]">
                 <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
                 
                 <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
                 
                 <img 
                   :src="photo.url" 
-                  :alt="photo.title"
                   loading="lazy"
                   @load="photo.loaded = true"
-                  @error="photo.loaded = true" 
-                  :class="['w-full h-auto transition-all duration-700 ease-in-out group-hover:scale-110 block z-10', photo.loaded ? 'opacity-100' : 'opacity-0 scale-105 blur-sm']" 
+                  @error="photo.loaded = true"
+                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
                 />
               </div>
               
@@ -124,9 +122,11 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
+// --- SCROLL LOGIC FOR HEADER ---
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
+  // Reappears on scroll up, hides on scroll down after 100px
   showMenu.value = currentScrollY < lastScrollY.value || currentScrollY < 100
   lastScrollY.value = currentScrollY
 }
@@ -150,7 +150,10 @@ onMounted(() => {
   nextTick(() => { initScrollAnimations('.work-tile') })
 })
 
-onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
+onUnmounted(() => { 
+  window.removeEventListener('scroll', handleScroll) 
+  ScrollTrigger.getAll().forEach(t => t.kill())
+})
 
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
@@ -177,10 +180,10 @@ const videoWorks = [
   { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
 ]
 
+// SPECIFIC DATA ORDER RESTORED
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
-  { title: 'Warrior', url: 'photos/6.webp', loaded: false },
   { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
   { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
   { title: 'Quantum', url: 'photos/24.webp', loaded: false },
@@ -222,7 +225,7 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON SHIMMER RECTANGLES */
+/* SKELETON SHIMMER EFFECT */
 .skeleton-loader {
   width: 100%; height: 100%;
   background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
@@ -231,14 +234,14 @@ const photographyWorks = reactive([
 }
 @keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
-/* MOBILE DISABLE HOVER */
+/* MOBILE DISABLE HOVER EFFECTS */
 @media (hover: hover) {
   .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
-  .group:hover img { transform: scale(1.1); }
+  .group:hover .preview-video, .group:hover img { transform: scale(1.2); }
 }
 @media (hover: none) {
   .hover-border { display: none !important; }
-  .group:hover img { transform: none !important; }
+  .group:hover img, .group:hover .preview-video { transform: none !important; }
 }
 
 .preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease; }
@@ -246,8 +249,4 @@ const photographyWorks = reactive([
 .garamond-font { font-family: 'EB Garamond', serif; }
 .work-tile { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #18181b; }
 .tile-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%); z-index: 5; }
-
-/* Lightbox Fade */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
