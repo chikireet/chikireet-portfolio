@@ -59,7 +59,8 @@
                  :key="'photo-'+index" 
                  class="photography-container break-inside-avoid mb-4 opacity-0 transform translate-y-10">
               
-              <div class="relative group cursor-pointer overflow-hidden shadow-xl" @click="selectedPhoto = photo">
+              <div class="relative group cursor-pointer overflow-hidden shadow-xl bg-[#0a0a0a]" @click="selectedPhoto = photo">
+                
                 <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
                 
                 <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
@@ -68,7 +69,7 @@
                   :src="photo.url" 
                   loading="lazy"
                   @load="photo.loaded = true"
-                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100' : 'opacity-0 blur-lg']" 
+                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110']" 
                 />
               </div>
 
@@ -114,7 +115,6 @@ import VideoModal from '@/components/VideoModal.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// UI State
 const activeTab = ref('branded')
 const selectedPhoto = ref(null)
 const showMenu = ref(true)
@@ -124,7 +124,6 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
-// --- SCROLL LOGIC ---
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
@@ -162,12 +161,10 @@ const closeModal = () => { isModalOpen.value = false; }
 watch(activeTab, (newTab) => {
   nextTick(() => {
     ScrollTrigger.refresh()
-    // Target the container for photography to ensure preloader is visible
     initScrollAnimations(newTab === 'photography' ? '.photography-container' : '.work-tile')
   })
 })
 
-// --- CONTENT DATA ---
 const videoWorks = [
   { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4', poster: 'othership_freeze_the_momen.webp' },
   { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4', poster: 'romes_rock_n_roll_is_asleep.webp' },
@@ -181,7 +178,6 @@ const videoWorks = [
   { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
 ]
 
-// reactive photography array to track load states
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
@@ -210,52 +206,35 @@ const photographyWorks = reactive([
 </script>
 
 <style scoped>
-/* GLOBAL SCROLLBAR REMOVAL */
-:global(html::-webkit-scrollbar), 
-:global(body::-webkit-scrollbar) {
-  display: none !important;
-}
-
+:global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
 :global(html), :global(body) {
   background-color: black !important;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-width: none !important;
+  margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important;
 }
 
-/* SKELETON ANIMATION */
+/* SKELETON PRELOADER */
 .skeleton-loader {
-  background: linear-gradient(
-    90deg,
-    #111 25%,
-    #1a1a1a 50%,
-    #111 75%
-  );
+  width: 100%;
+  aspect-ratio: 3 / 4; /* Standard portrait shape to reserve space */
+  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
   background-size: 200% 100%;
-  animation: shimmer 2.5s infinite linear;
-  min-height: 400px; /* Estimated height to prevent layout shift */
+  animation: shimmer 2s infinite linear;
 }
 
 @keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+  from { background-position: 150% 0; }
+  to { background-position: -150% 0; }
 }
 
-/* BORDER EFFECTS & MOBILE DISABLE */
+/* MOBILE DISABLE HOVER EFFECTS */
 @media (hover: hover) {
-  .group:hover .hover-border {
-    border-width: 10px;
-    border-color: #ffc200;
-  }
+  .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
+  .group:hover .preview-video { transform: scale(1.2); }
 }
 
-/* Ensure no border appears on touch devices even if "hover" class is toggled by touch */
 @media (hover: none) {
-  .hover-border {
-    display: none !important;
-  }
+  .hover-border { display: none !important; }
+  .group:hover img, .group:hover .preview-video { transform: none !important; }
 }
 
 .btn-text { position: relative; display: inline-block; }
@@ -274,7 +253,6 @@ const photographyWorks = reactive([
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; 
   pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease;
 }
-.group:hover .preview-video { transform: scale(1.2); }
 
 .druk-title { font-family: 'Druk Text Cyr Heavy', sans-serif; }
 .garamond-font { font-family: 'EB Garamond', serif; }
