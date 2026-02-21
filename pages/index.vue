@@ -63,6 +63,7 @@ import gsap from 'gsap'
 useSeoMeta({
   title: 'Gene Perez | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
+  ogImage: '/share-preview.webp',
 })
 
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
@@ -161,12 +162,8 @@ const updateLogoSize = () => {
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
   
-  // 1. Calculate the exact pixel size to match the SiteHeader
-  // SiteHeader is 150px on desktop, 100px on mobile.
   const targetWidth = vw <= 850 ? 100 : 150;
   
-  // 2. Instead of vw, we set the font-size in pixels
-  // We use 1.02 multiplier because Druk text renders slightly smaller than SVG paths
   const titleSize = `${targetWidth * 1.02}px`;
   
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
@@ -273,7 +270,6 @@ onUnmounted(() => {
   letter-spacing: var(--section-letter-spacing); 
   text-transform: uppercase; 
   color: #ffc200; 
-  /* Adjusted line-height to 0.85 to center baseline with SVG path */
   line-height: 0.85; 
   transform: translateY(100%); 
   opacity: 0; 
