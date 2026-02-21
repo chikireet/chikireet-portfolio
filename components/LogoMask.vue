@@ -104,27 +104,34 @@ const updateSize = () => {
 
   const isMobile = viewportWidth.value <= 850
   
-  // Header Logo Sync Logic
-  /**
-   * Desktop Target: 150px (Scale: 150/360 = 0.4166)
-   * Mobile Target: 100px (Scale: 100/360 = 0.2777)
-   */
-  finalScale = isMobile ? (100 / 360) : (150 / 360)
+  // --- PRECISION CONTROLS ---
+  // Adjust these specific numbers to nudge the logo for the perfect match
+  const desktopWidth = 152  // Final width in pixels on desktop
+  const desktopTop   = 19   // Final distance from top edge in pixels on desktop
+  
+  const mobileWidth  = 100  // Final width in pixels on mobile
+  const mobileTop    = 15   // Final distance from top edge in pixels on mobile
+  // ---------------------------
 
-  /**
-   * Header top positions: Desktop 23px, Mobile 11px
-   * We calculate translateY based on half viewport height
-   */
+  // 1. Calculate Scale based on chosen width
+  const targetWidth = isMobile ? mobileWidth : desktopWidth
+  finalScale = targetWidth / originalWidth
+
+  // 2. Calculate Position based on chosen top offset
+  const targetTop = isMobile ? mobileTop : desktopTop
   const scaledHeight = originalHeight * finalScale
-  const topOffset = isMobile ? 15 : 23
-  finalTranslateY = -(viewportHeight.value / 2 - (topOffset + (scaledHeight / 2)))
+  
+  // Math: Move from center to top edge, then push down by targetTop and half the logo height
+  finalTranslateY = -(viewportHeight.value / 2 - (targetTop + (scaledHeight / 2)))
 
   if (!animationCompleted.value) {
     const scaleW = viewportWidth.value / originalWidth
     const scaleH = viewportHeight.value / originalHeight
+    // Initial intro size
     scale.value = Math.min(scaleW, scaleH) * 0.95
     translateY.value = 0
   } else {
+    // Lock into final landing position
     scale.value = finalScale
     translateY.value = finalTranslateY
   }
@@ -140,7 +147,6 @@ onMounted(async () => {
   await nextTick()
   isReady.value = true
 
-  // Initial animation setup based on the new synchronized values
   const scaleW = viewportWidth.value / originalWidth
   const scaleH = viewportHeight.value / originalHeight
   const initialScale = Math.min(scaleW, scaleH) * 0.95
@@ -161,5 +167,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Scoped styles remain clean as positioning is SVG-based */
+/* Positioning is managed via JS calculation for pixel-perfection */
 </style>

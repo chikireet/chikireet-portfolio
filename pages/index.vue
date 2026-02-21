@@ -61,8 +61,9 @@ import { ref, onMounted, onUnmounted, nextTick, computed, defineAsyncComponent }
 import gsap from 'gsap'
 
 useSeoMeta({
-  title: 'Yevhen Pereverziev | Director & Photographer',
+  title: 'Gene Perez | Director & Photographer',
   description: 'Toronto-based Director and Photographer.',
+  ogImage: '/share-preview.webp',
 })
 
 const HeroSection = defineAsyncComponent(() => import('@/components/HeroSection.vue'))
@@ -160,7 +161,11 @@ const goTo = async (index) => {
 const updateLogoSize = () => { 
   if (typeof window === 'undefined') return; 
   const vw = window.innerWidth; 
-  const titleSize = vw <= 850 ? '11vw' : '10vw';
+  
+  const targetWidth = vw <= 850 ? 100 : 150;
+  
+  const titleSize = `${targetWidth * 1.02}px`;
+  
   document.documentElement.style.setProperty('--section-title-size', titleSize); 
 }
 
@@ -238,7 +243,6 @@ onUnmounted(() => {
   pointer-events: auto !important; 
 }
 
-/* Modal must be above the shield and header */
 :deep(.video-modal-container) {
   z-index: 10001 !important;
 }
@@ -263,10 +267,10 @@ onUnmounted(() => {
   font-size: var(--section-title-size); 
   font-family: 'Druk Text Cyr Heavy', sans-serif; 
   font-weight: 500; 
-  letter-spacing: -0.05em; 
+  letter-spacing: var(--section-letter-spacing); 
   text-transform: uppercase; 
   color: #ffc200; 
-  line-height: 1; 
+  line-height: 0.85; 
   transform: translateY(100%); 
   opacity: 0; 
   white-space: nowrap;
@@ -275,7 +279,7 @@ onUnmounted(() => {
 .section-caption-mask { 
   pointer-events: none; 
   position: absolute; 
-  bottom: 8dvh; 
+  bottom: 3dvh; 
   left: 50%; 
   transform: translateX(-50%); 
   overflow: hidden; 

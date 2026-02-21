@@ -24,16 +24,12 @@
         <div v-if="activeTab === 'branded'" class="grid grid-cols-1 md:grid-cols-2 gap-1">
           <div v-for="(work, index) in videoWorks" 
                :key="'vid-'+index" 
-               class="work-tile group cursor-pointer opacity-0 transform translate-y-10"
+               class="work-tile group cursor-pointer"
                @click="openModal(work.vimeoId, work.title, work.client)">
             
             <video 
               class="preview-video" 
-              autoplay 
-              muted 
-              loop 
-              playsinline 
-              preload="metadata"
+              autoplay muted loop playsinline preload="metadata"
               :poster="`/previews/posters/${work.poster}`"
               disablePictureInPicture
             >
@@ -57,12 +53,23 @@
           <div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
             <div v-for="(photo, index) in photographyWorks" 
                  :key="'photo-'+index" 
-                 @click="selectedPhoto = photo"
-                 class="relative group cursor-pointer break-inside-avoid photography-item mb-4 opacity-0 transform translate-y-10">
-              <div class="relative overflow-hidden shadow-xl">
-                <div class="absolute inset-0 border-0 group-hover:border-[10px] border-[#ffc200] z-20 pointer-events-none transition-all duration-300"></div>
-                <img :src="photo.url" loading="lazy" class="w-full h-auto transition-transform duration-700 ease-in-out group-hover:scale-125 block z-10" />
+                 class="photography-item relative group cursor-pointer break-inside-avoid mb-4"
+                 @click="selectedPhoto = photo">
+              
+              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[300px]">
+                <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
+                
+                <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
+                
+                <img 
+                  :src="photo.url" 
+                  loading="lazy" 
+                  @load="photo.loaded = true"
+                  @error="photo.loaded = true"
+                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-110 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
+                />
               </div>
+              
               <div class="pt-2 pb-4 text-[#ffc200] italic garamond-font text-sm md:text-base">
                 {{ photo.title }}
               </div>
@@ -96,14 +103,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, onMounted, onUnmounted, reactive } from 'vue'
 import SiteHeader from '@/components/SiteHeader.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 import VideoModal from '@/components/VideoModal.vue'
-
-gsap.registerPlugin(ScrollTrigger)
 
 // UI State
 const activeTab = ref('branded')
@@ -115,49 +118,28 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
-// --- SCROLL LOGIC ---
+// Header scroll behavior
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
-  showMenu.value = !(currentScrollY > lastScrollY.value && currentScrollY > 100)
+  showMenu.value = currentScrollY < lastScrollY.value || currentScrollY < 100
   lastScrollY.value = currentScrollY
-}
-
-const initScrollAnimations = (selector) => {
-  const items = document.querySelectorAll(selector)
-  items.forEach((item) => {
-    gsap.to(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: "top bottom-=50",
-        toggleActions: "play none none none"
-      },
-      opacity: 1, y: 0, duration: 1, ease: "power3.out"
-    })
-  })
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  nextTick(() => { initScrollAnimations('.work-tile') })
 })
 
-onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
+onUnmounted(() => { 
+  window.removeEventListener('scroll', handleScroll) 
+})
 
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
 }
-
 const closeModal = () => { isModalOpen.value = false; }
 
-watch(activeTab, (newTab) => {
-  nextTick(() => {
-    ScrollTrigger.refresh()
-    initScrollAnimations(newTab === 'photography' ? '.photography-item' : '.work-tile')
-  })
-})
-
-// --- CONTENT DATA WITH UPDATED POSTERS ---
+// --- CONTENT DATA ---
 const videoWorks = [
   { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4', poster: 'othership_freeze_the_momen.webp' },
   { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4', poster: 'romes_rock_n_roll_is_asleep.webp' },
@@ -171,29 +153,81 @@ const videoWorks = [
   { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
 ]
 
-const photographyWorks = [
-  { title: 'Midnight Reverie', url: '/photos/1.avif' },
-  { title: 'Quantum', url: '/photos/2.avif' },
-  { title: 'Midnight Reverie', url: '/photos/20.avif' },
-  { title: 'Sorry, I\'m Creative', url: '/photos/26.avif' },
-  { title: 'Quantum', url: '/photos/24.avif' },
-  { title: 'Phone Booth', url: '/photos/29.avif' },
-  { title: 'Midnight Reverie', url: '/photos/34.avif' },
-  { title: 'Phone Booth', url: '/photos/7.avif' },
-  { title: 'Quantum', url: '/photos/10.avif' },
-  { title: 'Warrior', url: '/photos/5.avif' },
-  { title: 'Sorry, I\'m Creative', url: '/photos/3.avif' },
-  { title: 'Phone Booth', url: '/photos/23.avif' },
-  { title: 'Warrior', url: '/photos/27.avif' },
-  { title: 'Warrior', url: '/photos/31.avif' },
-  { title: 'Warrior', url: '/photos/35.avif' },
-  { title: 'Phone Booth', url: '/photos/8.avif' },
-  { title: 'Phone Booth', url: '/photos/32.avif' },
-  { title: 'Quantum', url: '/photos/21.avif' },
-  { title: 'Warrior', url: '/photos/22.avif' },
-  { title: 'Midnight Reverie', url: '/photos/25.avif' },
-  { title: 'Sorry, I\'m Creative', url: '/photos/28.avif' },
-  { title: 'Midnight Reverie', url: '/photos/30.avif' },
-  { title: 'Quantum', url: '/photos/33.avif' }
-]
+// reactive photography array to track load states
+const photographyWorks = reactive([
+  { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/2.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/24.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/29.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/34.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/7.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/10.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/5.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/3.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/23.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/27.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/31.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/35.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/8.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/32.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/21.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/22.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/25.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/28.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/30.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/33.webp', loaded: false }
+])
 </script>
+
+<style scoped>
+:global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
+:global(html), :global(body) {
+  background-color: black !important;
+  margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important;
+}
+
+/* Category Tab Effect */
+.btn-text { position: relative; display: inline-block; }
+.btn-text::after {
+  content: ''; position: absolute; top: 55%; left: 0; width: 100%; height: 1.5px;
+  background-color: #ffc200; transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.group:hover .btn-text::after, .active-tab .btn-text::after { transform: scaleX(1); }
+
+.roboto-tabs { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.05em; color: #ffc200; }
+.active-tab { opacity: 1; }
+.inactive-tab { opacity: 0.4; }
+
+/* Skeleton Shimmer Logic */
+.skeleton-loader {
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+@keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
+
+/* Mobile Hover Disable */
+@media (hover: hover) {
+  .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
+  .group:hover img { transform: scale(1.1); }
+}
+@media (hover: none) {
+  .hover-border { display: none !important; }
+  .group:hover img { transform: none !important; }
+}
+
+/* Base Styles */
+.preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.druk-title { font-family: 'Druk Text Cyr Heavy', sans-serif; }
+.garamond-font { font-family: 'EB Garamond', serif; }
+.work-tile { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #18181b; }
+.tile-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%); z-index: 5; }
+
+/* Lightbox Fade */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+</style>
