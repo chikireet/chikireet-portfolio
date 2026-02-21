@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Gene Perez | Director & Photographer in Toronto',
+      title: 'Gene Perez | Director & Photographer',
       meta: [
         { charset: 'utf-8' },
         { name: 'theme-color', content: '#ffc200' },
@@ -15,8 +15,8 @@ export default defineNuxtConfig({
           name: 'viewport', 
           content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
         },
-        { name: 'description', content: 'Yevhen Pereverziev is a Toronto-based director and photographer.' },
-        { property: 'og:title', content: 'Yevhen Pereverziev | Director & Photographer in Toronto' },
+        { name: 'description', content: 'Award-winning visual storytelling and cinematic photography for global brands, based in Toronto.' },
+        { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
         { property: 'og:type', content: 'website' }
       ],
       link: [
