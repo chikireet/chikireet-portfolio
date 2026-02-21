@@ -63,9 +63,11 @@
                 
                 <img 
                   :src="photo.url" 
-                  loading="lazy" 
+                  :loading="index < 6 ? 'eager' : 'lazy'"
+                  :priority="index < 6"
                   @load="photo.loaded = true"
-                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110 blur-lg']" 
+                  @error="handleImageError(photo)"
+                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
                 />
               </div>
               
@@ -137,6 +139,11 @@ const initScrollAnimations = (selector) => {
   })
 }
 
+const handleImageError = (photo) => {
+  console.error(`Failed to load: ${photo.url}`);
+  photo.loaded = true; // Reveal the container even if image fails so it doesn't stay shimmering forever
+}
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   nextTick(() => { initScrollAnimations('.work-tile') })
@@ -173,6 +180,7 @@ const videoWorks = [
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/6.webp', loaded: false }, // Moved 6 up for testing
   { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
   { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
   { title: 'Quantum', url: 'photos/24.webp', loaded: false },
@@ -214,12 +222,12 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON SHIMMER RESTORED */
+/* SKELETON SHIMMER */
 .skeleton-loader {
   width: 100%; height: 100%;
   background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
   background-size: 200% 100%;
-  animation: shimmer 2.5s infinite linear;
+  animation: shimmer 2s infinite linear;
 }
 @keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
