@@ -60,7 +60,6 @@
                    @click="selectedPhoto = photo">
                 
                 <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
-                
                 <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
                 
                 <img 
@@ -122,7 +121,6 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
-// Scroll Logic
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
@@ -134,11 +132,7 @@ const initScrollAnimations = (selector) => {
   const items = document.querySelectorAll(selector)
   items.forEach((item) => {
     gsap.to(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: "top bottom-=50",
-        toggleActions: "play none none none"
-      },
+      scrollTrigger: { trigger: item, start: "top bottom-=50", toggleActions: "play none none none" },
       opacity: 1, y: 0, duration: 1, ease: "power3.out"
     })
   })
@@ -164,10 +158,19 @@ watch(activeTab, (newTab) => {
   })
 })
 
-// Video Data (keep your existing array)
-const videoWorks = [...] 
+const videoWorks = [
+  { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4', poster: 'othership_freeze_the_momen.webp' },
+  { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4', poster: 'romes_rock_n_roll_is_asleep.webp' },
+  { title: 'JORDAN', client: 'BinBaz', type: 'Travel Video', vimeoId: '1158027631', localPreview: 'jordan.mp4', poster: 'jordan.webp' },
+  { title: 'PHANTOM', client: 'Trailer', type: 'Short Film', vimeoId: '1158824495', localPreview: 'the_phantom.mp4', poster: 'the_phantom.webp' },
+  { title: 'FEEL IT', client: 'Hyundai', type: 'Commercial', vimeoId: '1161371386', localPreview: 'hyundai_feel_it.mp4', poster: 'hyundai_feel_it.webp' },
+  { title: 'SMOOTH X2', client: 'ZHIYUN', type: 'Commercial', vimeoId: '1161369145', localPreview: 'zhiyun_smooth_x2.mp4', poster: 'zhiyun_smooth_x2.webp' },
+  { title: 'TTC', client: 'TTC', type: 'Creative Project', vimeoId: '1158583072', localPreview: 'ttc_if_you_see_something_say_something.mp4', poster: 'ttc_if_you_see_something_say_something.webp' },
+  { title: 'MSLS', client: 'Rosh Posh', type: 'Commercial', vimeoId: '1161372925', localPreview: 'rosh_posh_msls.mp4', poster: 'rosh_posh_msls.webp' },
+  { title: 'ALTERED STATE', client: 'Othership', type: 'Commercial', vimeoId: '1158028099', localPreview: 'chill_your_stress_othership.mp4', poster: 'chill_your_stress_othership.webp' },
+  { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
+]
 
-// Reactive Photography Data with 'loaded' property
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
@@ -196,24 +199,17 @@ const photographyWorks = reactive([
 </script>
 
 <style scoped>
-/* SKELETON SHIMMER EFFECT */
+:global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
+:global(html), :global(body) { background-color: black !important; margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important; }
+
+/* SKELETON SHIMMER */
 .skeleton-loader {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    #0a0a0a 25%,
-    #18181b 50%,
-    #0a0a0a 75%
-  );
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite linear;
 }
-
-@keyframes shimmer {
-  from { background-position: 150% 0; }
-  to { background-position: -150% 0; }
-}
+@keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
 /* MOBILE DISABLE HOVER BORDER */
 @media (hover: hover) {
@@ -225,7 +221,6 @@ const photographyWorks = reactive([
   .group:hover img, .group:hover .preview-video { transform: none !important; }
 }
 
-/* Existing typography/layout styles remain... */
 .roboto-tabs { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.05em; color: #ffc200; }
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
