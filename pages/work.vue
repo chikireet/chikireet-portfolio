@@ -56,17 +56,19 @@
                  class="photography-item relative group cursor-pointer break-inside-avoid mb-4 opacity-0 transform translate-y-10"
                  @click="selectedPhoto = photo">
               
-              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[300px]">
+              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[200px]">
+                
                 <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
                 
                 <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
                 
                 <img 
                   :src="photo.url" 
+                  :alt="photo.title"
                   loading="lazy"
                   @load="photo.loaded = true"
-                  @error="photo.loaded = true"
-                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
+                  @error="photo.loaded = true" 
+                  :class="['w-full h-auto transition-all duration-700 ease-in-out group-hover:scale-110 block z-10', photo.loaded ? 'opacity-100' : 'opacity-0 scale-105 blur-sm']" 
                 />
               </div>
               
@@ -122,11 +124,9 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
-// --- SCROLL LOGIC FOR HEADER ---
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
-  // Hide on scroll down, show on scroll up
   showMenu.value = currentScrollY < lastScrollY.value || currentScrollY < 100
   lastScrollY.value = currentScrollY
 }
@@ -150,10 +150,7 @@ onMounted(() => {
   nextTick(() => { initScrollAnimations('.work-tile') })
 })
 
-onUnmounted(() => { 
-  window.removeEventListener('scroll', handleScroll) 
-  ScrollTrigger.getAll().forEach(t => t.kill())
-})
+onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
 
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
@@ -167,7 +164,6 @@ watch(activeTab, (newTab) => {
   })
 })
 
-// --- CONTENT DATA ---
 const videoWorks = [
   { title: 'FREEZE THE MOMENT', client: 'Othership', type: 'Commercial', vimeoId: '1161375860', localPreview: 'othership_freeze_the_momen.mp4', poster: 'othership_freeze_the_momen.webp' },
   { title: 'RNR IS ASLEEP', client: 'ROMES', type: 'Music Video', vimeoId: '1134782625', localPreview: 'romes_rock_n_roll_is_asleep.mp4', poster: 'romes_rock_n_roll_is_asleep.webp' },
@@ -184,6 +180,7 @@ const videoWorks = [
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/6.webp', loaded: false },
   { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
   { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
   { title: 'Quantum', url: 'photos/24.webp', loaded: false },
@@ -212,7 +209,7 @@ const photographyWorks = reactive([
 :global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
 :global(html), :global(body) { background-color: black !important; margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important; }
 
-/* NAV TAB CROSSED OUT EFFECT */
+/* CATEGORY TABS STRIKE EFFECT */
 .btn-text { position: relative; display: inline-block; }
 .btn-text::after {
   content: ''; position: absolute; top: 55%; left: 0; width: 100%; height: 1.5px;
@@ -225,7 +222,7 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON SHIMMER */
+/* SKELETON SHIMMER RECTANGLES */
 .skeleton-loader {
   width: 100%; height: 100%;
   background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
@@ -234,14 +231,14 @@ const photographyWorks = reactive([
 }
 @keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
-/* MOBILE DISABLE HOVER EFFECTS */
+/* MOBILE DISABLE HOVER */
 @media (hover: hover) {
   .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
-  .group:hover .preview-video, .group:hover img { transform: scale(1.2); }
+  .group:hover img { transform: scale(1.1); }
 }
 @media (hover: none) {
   .hover-border { display: none !important; }
-  .group:hover img, .group:hover .preview-video { transform: none !important; }
+  .group:hover img { transform: none !important; }
 }
 
 .preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease; }
@@ -249,4 +246,8 @@ const photographyWorks = reactive([
 .garamond-font { font-family: 'EB Garamond', serif; }
 .work-tile { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #18181b; }
 .tile-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%); z-index: 5; }
+
+/* Lightbox Fade */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
