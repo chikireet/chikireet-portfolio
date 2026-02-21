@@ -57,12 +57,21 @@
           <div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
             <div v-for="(photo, index) in photographyWorks" 
                  :key="'photo-'+index" 
-                 @click="selectedPhoto = photo"
-                 class="relative group cursor-pointer break-inside-avoid photography-item mb-4 opacity-0 transform translate-y-10">
-              <div class="relative overflow-hidden shadow-xl">
-                <div class="absolute inset-0 border-0 group-hover:border-[10px] border-[#ffc200] z-20 pointer-events-none transition-all duration-300"></div>
-                <img :src="photo.url" loading="lazy" class="w-full h-auto transition-transform duration-700 ease-in-out group-hover:scale-125 block z-10" />
+                 class="photography-container break-inside-avoid mb-4 opacity-0 transform translate-y-10">
+              
+              <div class="relative group cursor-pointer overflow-hidden shadow-xl" @click="selectedPhoto = photo">
+                <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
+                
+                <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
+                
+                <img 
+                  :src="photo.url" 
+                  loading="lazy"
+                  @load="photo.loaded = true"
+                  :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100' : 'opacity-0 blur-lg']" 
+                />
               </div>
+
               <div class="pt-2 pb-4 text-[#ffc200] italic garamond-font text-sm md:text-base">
                 {{ photo.title }}
               </div>
@@ -96,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch, reactive } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SiteHeader from '@/components/SiteHeader.vue'
@@ -153,7 +162,8 @@ const closeModal = () => { isModalOpen.value = false; }
 watch(activeTab, (newTab) => {
   nextTick(() => {
     ScrollTrigger.refresh()
-    initScrollAnimations(newTab === 'photography' ? '.photography-item' : '.work-tile')
+    // Target the container for photography to ensure preloader is visible
+    initScrollAnimations(newTab === 'photography' ? '.photography-container' : '.work-tile')
   })
 })
 
@@ -171,31 +181,32 @@ const videoWorks = [
   { title: 'PIECE OF GLASS', client: 'Windshield Experts', type: 'Commercial', vimeoId: '1161373792', localPreview: 'windshield_experts_piece_of_glass.mp4', poster: 'windshield_experts_piece_of_glass.webp' }
 ]
 
-const photographyWorks = [
-  { title: 'Midnight Reverie', url: 'photos/1.webp' },
-  { title: 'Quantum', url: 'photos/2.webp' },
-  { title: 'Midnight Reverie', url: 'photos/20.webp' },
-  { title: 'Sorry, I\'m Creative', url: 'photos/26.webp' },
-  { title: 'Quantum', url: 'photos/24.webp' },
-  { title: 'Phone Booth', url: 'photos/29.webp' },
-  { title: 'Midnight Reverie', url: 'photos/34.webp' },
-  { title: 'Phone Booth', url: 'photos/7.webp' },
-  { title: 'Quantum', url: 'photos/10.webp' },
-  { title: 'Warrior', url: 'photos/5.webp' },
-  { title: 'Sorry, I\'m Creative', url: 'photos/3.webp' },
-  { title: 'Phone Booth', url: 'photos/23.webp' },
-  { title: 'Warrior', url: 'photos/27.webp' },
-  { title: 'Warrior', url: 'photos/31.webp' },
-  { title: 'Warrior', url: 'photos/35.webp' },
-  { title: 'Phone Booth', url: 'photos/8.webp' },
-  { title: 'Phone Booth', url: 'photos/32.webp' },
-  { title: 'Quantum', url: 'photos/21.webp' },
-  { title: 'Warrior', url: 'photos/22.webp' },
-  { title: 'Midnight Reverie', url: 'photos/25.webp' },
-  { title: 'Sorry, I\'m Creative', url: 'photos/28.webp' },
-  { title: 'Midnight Reverie', url: 'photos/30.webp' },
-  { title: 'Quantum', url: 'photos/33.webp' }
-]
+// reactive photography array to track load states
+const photographyWorks = reactive([
+  { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/2.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/24.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/29.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/34.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/7.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/10.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/5.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/3.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/23.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/27.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/31.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/35.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/8.webp', loaded: false },
+  { title: 'Phone Booth', url: 'photos/32.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/21.webp', loaded: false },
+  { title: 'Warrior', url: 'photos/22.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/25.webp', loaded: false },
+  { title: 'Sorry, I\'m Creative', url: 'photos/28.webp', loaded: false },
+  { title: 'Midnight Reverie', url: 'photos/30.webp', loaded: false },
+  { title: 'Quantum', url: 'photos/33.webp', loaded: false }
+])
 </script>
 
 <style scoped>
@@ -212,6 +223,39 @@ const photographyWorks = [
   overflow-y: auto !important;
   overflow-x: hidden !important;
   scrollbar-width: none !important;
+}
+
+/* SKELETON ANIMATION */
+.skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    #111 25%,
+    #1a1a1a 50%,
+    #111 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite linear;
+  min-height: 400px; /* Estimated height to prevent layout shift */
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* BORDER EFFECTS & MOBILE DISABLE */
+@media (hover: hover) {
+  .group:hover .hover-border {
+    border-width: 10px;
+    border-color: #ffc200;
+  }
+}
+
+/* Ensure no border appears on touch devices even if "hover" class is toggled by touch */
+@media (hover: none) {
+  .hover-border {
+    display: none !important;
+  }
 }
 
 .btn-text { position: relative; display: inline-block; }
