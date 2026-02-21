@@ -64,9 +64,8 @@
                 <img 
                   :src="photo.url" 
                   :loading="index < 6 ? 'eager' : 'lazy'"
-                  :priority="index < 6"
                   @load="photo.loaded = true"
-                  @error="handleImageError(photo)"
+                  @error="photo.loaded = true"
                   :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
                 />
               </div>
@@ -139,11 +138,6 @@ const initScrollAnimations = (selector) => {
   })
 }
 
-const handleImageError = (photo) => {
-  console.error(`Failed to load: ${photo.url}`);
-  photo.loaded = true; // Reveal the container even if image fails so it doesn't stay shimmering forever
-}
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   nextTick(() => { initScrollAnimations('.work-tile') })
@@ -154,7 +148,6 @@ onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
 }
-
 const closeModal = () => { isModalOpen.value = false; }
 
 watch(activeTab, (newTab) => {
@@ -180,7 +173,7 @@ const videoWorks = [
 const photographyWorks = reactive([
   { title: 'Midnight Reverie', url: 'photos/1.webp', loaded: false },
   { title: 'Quantum', url: 'photos/2.webp', loaded: false },
-  { title: 'Warrior', url: 'photos/6.webp', loaded: false }, // Moved 6 up for testing
+  { title: 'Warrior', url: 'photos/6.webp', loaded: false },
   { title: 'Midnight Reverie', url: 'photos/20.webp', loaded: false },
   { title: 'Sorry, I\'m Creative', url: 'photos/26.webp', loaded: false },
   { title: 'Quantum', url: 'photos/24.webp', loaded: false },
@@ -209,7 +202,7 @@ const photographyWorks = reactive([
 :global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
 :global(html), :global(body) { background-color: black !important; margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important; }
 
-/* NAV TAB CROSSED OUT EFFECT */
+/* CATEGORY TABS EFFECT RESTORED */
 .btn-text { position: relative; display: inline-block; }
 .btn-text::after {
   content: ''; position: absolute; top: 55%; left: 0; width: 100%; height: 1.5px;
@@ -222,7 +215,7 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON SHIMMER */
+/* SKELETON SHIMMER EFFECT */
 .skeleton-loader {
   width: 100%; height: 100%;
   background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
@@ -231,7 +224,7 @@ const photographyWorks = reactive([
 }
 @keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
-/* MOBILE DISABLE HOVER EFFECTS */
+/* MOBILE DISABLE HOVER */
 @media (hover: hover) {
   .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
   .group:hover .preview-video { transform: scale(1.2); }
