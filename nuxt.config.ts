@@ -2,6 +2,12 @@ import { defineNuxtConfig } from 'nuxt/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineNuxtConfig({
+  // SITE CONFIGURATION: Essential for @nuxtjs/sitemap
+  site: {
+    url: 'https://chikireet.com',
+    name: 'Gene Perez | Director & Photographer',
+  },
+
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
@@ -17,7 +23,9 @@ export default defineNuxtConfig({
         },
         { name: 'description', content: 'Award-winning visual storytelling and cinematic photography for global brands, based in Toronto.' },
         { property: 'og:title', content: 'Gene Perez – Director & Photographer | Toronto' },
-        { property: 'og:type', content: 'website' }
+        { property: 'og:type', content: 'website' },
+        // Ensure OG image uses the full domain for iMessage/Social previews
+        { property: 'og:image', content: 'https://chikireet.com/share-preview.jpg' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -26,7 +34,6 @@ export default defineNuxtConfig({
     }
   },
 
-  // Updated for Vercel deployment
   nitro: {
     preset: 'vercel'
   },
@@ -34,11 +41,21 @@ export default defineNuxtConfig({
   components: true,
   css: ['@/assets/css/fonts.css'],
   
-  // FIX: Added @vercel/speed-insights/nuxt to the modules array
   modules: [
     '@nuxtjs/tailwindcss', 
-    '@nuxt/image', 
+    '@nuxt/image',
+    '@nuxtjs/sitemap', // Added for SEO
+    '@nuxtjs/robots'   // Added for SEO
   ],
+
+  // ROBOTS CONFIGURATION
+  robots: {
+    rules: [
+      { UserAgent: '*' },
+      { Allow: '/' },
+      { Sitemap: 'https://chikireet.com/sitemap.xml' }
+    ]
+  },
   
   image: { 
     format: ['webp', 'avif', 'jpeg'], 
@@ -54,6 +71,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // Keep SSR enabled for better SEO
   ssr: true 
 })
