@@ -63,7 +63,7 @@
                 
                 <img 
                   :src="photo.url" 
-                  :loading="index < 6 ? 'eager' : 'lazy'"
+                  loading="lazy"
                   @load="photo.loaded = true"
                   @error="photo.loaded = true"
                   :class="['w-full h-auto transition-all duration-1000 ease-in-out group-hover:scale-125 block z-10', photo.loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105 blur-sm']" 
@@ -112,6 +112,7 @@ import VideoModal from '@/components/VideoModal.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// UI State
 const activeTab = ref('branded')
 const selectedPhoto = ref(null)
 const showMenu = ref(true)
@@ -121,10 +122,12 @@ const activeVideoId = ref('')
 const activeTitle = ref('')
 const activeClient = ref('')
 
+// Header Show/Hide Logic
 const handleScroll = () => {
   if (isModalOpen.value || selectedPhoto.value) return
   const currentScrollY = window.scrollY
-  showMenu.value = !(currentScrollY > lastScrollY.value && currentScrollY > 100)
+  // Show if scrolling up, hide if scrolling down (past 100px)
+  showMenu.value = currentScrollY < lastScrollY.value || currentScrollY < 100
   lastScrollY.value = currentScrollY
 }
 
@@ -132,7 +135,11 @@ const initScrollAnimations = (selector) => {
   const items = document.querySelectorAll(selector)
   items.forEach((item) => {
     gsap.to(item, {
-      scrollTrigger: { trigger: item, start: "top bottom-=50", toggleActions: "play none none none" },
+      scrollTrigger: {
+        trigger: item,
+        start: "top bottom-=50",
+        toggleActions: "play none none none"
+      },
       opacity: 1, y: 0, duration: 1, ease: "power3.out"
     })
   })
@@ -143,7 +150,10 @@ onMounted(() => {
   nextTick(() => { initScrollAnimations('.work-tile') })
 })
 
-onUnmounted(() => { window.removeEventListener('scroll', handleScroll) })
+onUnmounted(() => { 
+  window.removeEventListener('scroll', handleScroll) 
+  ScrollTrigger.getAll().forEach(t => t.kill())
+})
 
 const openModal = (id, title, client) => {
   activeVideoId.value = id; activeTitle.value = title; activeClient.value = client; isModalOpen.value = true;
@@ -202,7 +212,7 @@ const photographyWorks = reactive([
 :global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
 :global(html), :global(body) { background-color: black !important; margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important; }
 
-/* CATEGORY TABS EFFECT RESTORED */
+/* CATEGORY TABS STRIKE EFFECT */
 .btn-text { position: relative; display: inline-block; }
 .btn-text::after {
   content: ''; position: absolute; top: 55%; left: 0; width: 100%; height: 1.5px;
@@ -215,7 +225,8 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON SHIMMER EFFECT */
+/* SKELETON SHIMMER RECTANGLES */
+
 .skeleton-loader {
   width: 100%; height: 100%;
   background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
@@ -227,16 +238,22 @@ const photographyWorks = reactive([
 /* MOBILE DISABLE HOVER */
 @media (hover: hover) {
   .group:hover .hover-border { border-width: 10px; border-color: #ffc200; }
-  .group:hover .preview-video { transform: scale(1.2); }
+  .group:hover .preview-video, .group:hover img { transform: scale(1.2); }
 }
 @media (hover: none) {
   .hover-border { display: none !important; }
   .group:hover img, .group:hover .preview-video { transform: none !important; }
 }
 
-.preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease; }
+.preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform 0.8s ease; }
 .druk-title { font-family: 'Druk Text Cyr Heavy', sans-serif; }
 .garamond-font { font-family: 'EB Garamond', serif; }
 .work-tile { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #18181b; }
 .tile-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%); z-index: 5; }
+
+/* Masonry grid item spacing */
+.photography-item {
+  width: 100%;
+  display: block;
+}
 </style>
