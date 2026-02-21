@@ -56,7 +56,7 @@
                  class="photography-item relative group cursor-pointer break-inside-avoid mb-4 opacity-0 transform translate-y-10"
                  @click="selectedPhoto = photo">
               
-              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a]">
+              <div class="relative overflow-hidden shadow-xl bg-[#0a0a0a] min-h-[300px]">
                 <div v-if="!photo.loaded" class="skeleton-loader absolute inset-0 z-30"></div>
                 
                 <div class="hover-border absolute inset-0 border-0 z-20 pointer-events-none transition-all duration-300"></div>
@@ -111,7 +111,6 @@ import VideoModal from '@/components/VideoModal.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// UI State
 const activeTab = ref('branded')
 const selectedPhoto = ref(null)
 const showMenu = ref(true)
@@ -132,11 +131,7 @@ const initScrollAnimations = (selector) => {
   const items = document.querySelectorAll(selector)
   items.forEach((item) => {
     gsap.to(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: "top bottom-=50",
-        toggleActions: "play none none none"
-      },
+      scrollTrigger: { trigger: item, start: "top bottom-=50", toggleActions: "play none none none" },
       opacity: 1, y: 0, duration: 1, ease: "power3.out"
     })
   })
@@ -203,7 +198,6 @@ const photographyWorks = reactive([
 </script>
 
 <style scoped>
-/* GLOBAL SCROLLBAR REMOVAL */
 :global(html::-webkit-scrollbar), :global(body::-webkit-scrollbar) { display: none !important; }
 :global(html), :global(body) { background-color: black !important; margin: 0; padding: 0; overflow-y: auto !important; overflow-x: hidden !important; scrollbar-width: none !important; }
 
@@ -220,18 +214,14 @@ const photographyWorks = reactive([
 .active-tab { opacity: 1; }
 .inactive-tab { opacity: 0.4; }
 
-/* SKELETON PRELOADER */
+/* SKELETON SHIMMER RESTORED */
 .skeleton-loader {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  background: linear-gradient(90deg, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%);
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, #0a0a0a 25%, #18181b 50%, #0a0a0a 75%);
   background-size: 200% 100%;
-  animation: shimmer 2s infinite linear;
+  animation: shimmer 2.5s infinite linear;
 }
-@keyframes shimmer {
-  from { background-position: 150% 0; }
-  to { background-position: -150% 0; }
-}
+@keyframes shimmer { from { background-position: 150% 0; } to { background-position: -150% 0; } }
 
 /* MOBILE DISABLE HOVER EFFECTS */
 @media (hover: hover) {
@@ -243,7 +233,6 @@ const photographyWorks = reactive([
   .group:hover img, .group:hover .preview-video { transform: none !important; }
 }
 
-/* OTHER STYLES */
 .preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.01); transition: transform 0.8s ease; }
 .druk-title { font-family: 'Druk Text Cyr Heavy', sans-serif; }
 .garamond-font { font-family: 'EB Garamond', serif; }
