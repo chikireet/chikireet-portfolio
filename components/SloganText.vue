@@ -1,7 +1,7 @@
 <template>
   <div class="slogan-container">
-    <div :class="['slogan-line', 'left', { animate: visible }]">STORIES YOU FEEL.</div>
-    <div :class="['slogan-line', 'right', { animate: visible }]">THAT’S WHAT I DO.</div>
+    <div :class="['slogan-line', 'left', { animate: visible }]">STORIES YOU FEEL</div>
+    <div :class="['slogan-line', 'right', { animate: visible }]">THAT’S WHAT I DO</div>
   </div>
 </template>
 
