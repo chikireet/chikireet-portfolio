@@ -4,7 +4,7 @@
  */
 useSeoMeta({
   title: 'Shop Digital Assets | Gene Perez Toronto Director',
-  ogTitle: 'Gene Perez Shop | Coming Soon',
+  ogTitle: 'Gene Perez Shop | STARFORCE LUTS',
   description: 'The official store for professional filmmaking assets, LUTs, and photography presets by Toronto-based Director Gene Perez. Sign up for early access.',
   ogDescription: 'The store isn\'t open yet, but trust me, it\'ll be worth the wait.',
   ogImage: '/og-image.jpg',
@@ -94,7 +94,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <div v-else class="appear-animate mt-32 md:mt-0">
           <div class="relative inline-block py-10 px-4 md:px-20">
             <h1 class="magical-text druk-title text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter leading-[0.85] relative z-10">
-              Coming Soon
+              STARFORCE LUTS
             </h1>
             
             <div class="particle-container">
@@ -112,7 +112,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           </div>
           
           <p class="garamond-font text-[#ffc200] text-xl md:text-2xl italic tracking-wide mb-12 opacity-90 max-w-2xl mx-auto">
-            The store isn't open yet, but trust me, it'll be worth the wait.
+            Professional cinematic aesthetics for iPhone. Sign up to be the first to know when the vault opens.
           </p>
 
           <form @submit.prevent="handleSubmit" class="w-full max-w-xs space-y-8 mx-auto">
