@@ -15,8 +15,9 @@ export default defineNuxtConfig({
           name: 'viewport', 
           content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
         },
-        { name: 'description', content: 'Yevhen Pereverziev is a Toronto-based director and photographer.' },
-        { property: 'og:title', content: 'Yevhen Pereverziev | Director & Photographer in Toronto' },
+        // 👇 Исправил описание и Open Graph на твой рабочий бренд Gene Perez вместо легального имени
+        { name: 'description', content: 'Gene Perez is a Toronto-based director and photographer.' },
+        { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
         { property: 'og:type', content: 'website' }
       ],
       link: [
@@ -24,6 +25,11 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
       ]
     }
+  },
+
+  // 👇 ДОБАВИЛИ ЭТОТ БЛОК: Регистрируем переменную для бэкенда
+  runtimeConfig: {
+    brevoApiKey: process.env.BREVO_API_KEY
   },
 
   // Updated for Vercel deployment
