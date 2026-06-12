@@ -148,7 +148,7 @@
       </div>
     </section>
 
-    <section id="features" class="px-4 max-[1200px] mx-auto mb-16">
+    <section id="features" class="px-4 max-w-[1200px] mx-auto mb-16">
       <div class="bg-[#0D0D0D] rounded-[32px] md:rounded-[48px] py-20 md:py-32 px-4 md:px-16 flex flex-col items-center text-center custom-inner-bevel relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0A]/40 to-[#0A0A0A] z-10 pointer-events-none"></div>
 
@@ -162,7 +162,7 @@
             <span v-reveal class="reveal-line font-instrument font-normal italic text-[#FBFAFC] pt-2">Get Cinematic Results</span>
           </h2>
           
-          <p v-reveal class="text-base md:text-[22px] font-medium md:leading-[33px] md:tracking-[-0.4px] text-[#999999] mb-16 max-w-3xl">
+          <p v-reveal class="text-base md:text-[22px] font-medium md:leading-[33px] md:tracking-[-0.4px] text-[#999999] mb-16 md:make-mb-24 max-w-3xl">
             Designed meticulously to upgrade your mobile cinematography workflow instantly.
           </p>
 
@@ -483,7 +483,7 @@
             <div class="w-16 h-16 rounded-full bg-[#5A1BD1]/20 border border-[#5A1BD1]/30 flex items-center justify-center mx-auto mb-6">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </div>
-            h3 class="text-2xl font-bold text-white mb-2">You're on the list!</h3>
+            <h3 class="text-2xl font-bold text-white mb-2">You're on the list!</h3>
             <p class="text-neutral-400 text-sm">Check your email for your 10% discount code.</p>
           </div>
         </div>
@@ -846,7 +846,6 @@ onUnmounted(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap');
 
-/* Fixed viewport blocking behavior by transitioning structural parameters from static heights to relative limits */
 :global(html),
 :global(body) {
   background-color: #0A0A0A !important;
