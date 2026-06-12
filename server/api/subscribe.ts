@@ -12,13 +12,12 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const apiKey = config.brevoApiKey;
 
-  // Защита от дурака: если ключ всё ещё не подтянулся, скажем об этом
+  // Защита: если ключ всё ещё не подтянулся
   if (!apiKey) {
     console.error('CRITICAL: Brevo API key is missing in runtime config!');
     return { success: false, error: 'Server configuration error' };
   }
 
-  // Если listId передан, используем его, иначе оставляем дефолтный [2]
   const targetLists = listId ? [Number(listId)] : [2];
 
   try {
@@ -27,7 +26,7 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       headers: {
         'accept': 'application/json',
-        'api-key': apiKey, // Теперь ключ точно есть
+        'api-key': apiKey,
         'content-type': 'application/json'
       },
       body: {

@@ -15,7 +15,6 @@ export default defineNuxtConfig({
           name: 'viewport', 
           content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover' 
         },
-        // 👇 Исправил описание и Open Graph на твой рабочий бренд Gene Perez вместо легального имени
         { name: 'description', content: 'Gene Perez is a Toronto-based director and photographer.' },
         { property: 'og:title', content: 'Gene Perez | Director & Photographer in Toronto' },
         { property: 'og:type', content: 'website' }
@@ -27,12 +26,11 @@ export default defineNuxtConfig({
     }
   },
 
-  // 👇 ДОБАВИЛИ ЭТОТ БЛОК: Регистрируем переменную для бэкенда
+  // Ключ полностью убран из кода для безопасности GitHub Push Protection
   runtimeConfig: {
-    brevoApiKey: process.env.BREVO_API_KEY
+    brevoApiKey: process.env.BREVO_API_KEY || ''
   },
 
-  // Updated for Vercel deployment
   nitro: {
     preset: 'vercel'
   },
@@ -55,6 +53,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // Keep SSR enabled for better SEO
   ssr: true 
 })
