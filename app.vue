@@ -2,11 +2,13 @@
   <NuxtLayout>
     <NuxtPage />
     <SpeedInsights />
+    <Analytics />
   </NuxtLayout>
 </template>
 
 <script setup>
 import { SpeedInsights } from '@vercel/speed-insights/vue'
+import { Analytics } from '@vercel/analytics/nuxt'
 </script>
 
 <style>
