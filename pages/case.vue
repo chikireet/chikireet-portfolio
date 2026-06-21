@@ -3,7 +3,7 @@
     
     <nav :class="['fixed top-0 left-0 w-full z-[9999] bg-[#000000]/70 backdrop-blur-md border-b border-white/10 transition-all duration-1000 ease-out', isLoaded ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 -translate-y-4 blur-md']">
       <div class="max-w-[1024px] mx-auto px-6 h-12 flex items-center justify-between text-[12px] tracking-tight">
-        <div class="font-semibold text-[14px] tracking-normal text-white">
+        <div @click="refreshPage" class="font-semibold text-[14px] tracking-normal text-white cursor-pointer select-none active:opacity-70 transition">
           Othership Case Study <span class="text-[#8e8e93] font-light">/0027</span>
         </div>
         <div class="hidden md:flex space-x-6 text-[#f5f5f7]/80 font-normal">
@@ -356,17 +356,17 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// Нативная генерация мета-тегов Nuxt для раздельного превью страницы /case
+// Обновленные мета-теги страницы
 useSeoMeta({
-  title: 'Othership Case Study — Cinematic Content System',
-  ogTitle: 'Othership Case Study — Cinematic Content System',
-  description: 'How a custom cinematic content system generated over 1M organic views. Designed by Gene Perez.',
-  ogDescription: 'How a custom cinematic content system generated over 1M organic views. Designed by Gene Perez.',
+  title: 'Othership Case Study: 1M+ Organic Views',
+  ogTitle: 'Othership Case Study: 1M+ Organic Views',
+  description: 'How strategic cinematic content transformed the customer journey.',
+  ogDescription: 'How strategic cinematic content transformed the customer journey.',
   ogImage: 'https://chikireet.com/og-preview.jpg',
   ogUrl: 'https://chikireet.com/case',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'Othership Case Study — Cinematic Content System',
-  twitterDescription: 'How a custom cinematic content system generated over 1M organic views.',
+  twitterTitle: 'Othership Case Study: 1M+ Organic Views',
+  twitterDescription: 'How strategic cinematic content transformed the customer journey.',
   twitterImage: 'https://chikireet.com/og-preview.jpg'
 })
 
@@ -382,6 +382,11 @@ const displayedResultsViews = ref('0')
 
 const animatedPovViews = ref(0)
 const animatedBfViews = ref(0)
+
+// Функция принудительного обновления страницы из верхнего меню
+const refreshPage = () => {
+  window.location.reload()
+}
 
 const businessTypes = ref([
   'Wellness studios',
@@ -526,6 +531,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Стили остаются полностью прежними */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
 
 :global(body, html, #app, .brand-hybrid-shell) {
