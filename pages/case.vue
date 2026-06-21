@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="brand-hybrid-shell !bg-[#000000] text-[#f5f5f7] font-sans antialiased min-h-screen selection:bg-[#0071e3] selection:text-white">
     
     <nav :class="['fixed top-0 left-0 w-full z-[9999] bg-[#000000]/70 backdrop-blur-md border-b border-white/10 transition-all duration-1000 ease-out', isLoaded ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 -translate-y-4 blur-md']">
@@ -64,8 +64,8 @@
             </li>
           </ul>
           
-          <p class="pt-4 text-[17px] sub-step-4">Most businesses expect people to find those answers on their website.</p>
-          <p class="text-white font-semibold text-[17px] sub-step-5">I designed a content strategy where the Instagram profile itself answered those questions.</p>
+          <p>Most businesses expect people to find those answers on their website.</p>
+          <p class="text-white font-semibold text-[17px]">I designed a content strategy where the Instagram profile itself answered those questions.</p>
         </div>
       </div>
     </section>
@@ -355,6 +355,20 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+
+// Нативная генерация мета-тегов Nuxt для раздельного превью страницы /case
+useSeoMeta({
+  title: 'Othership Case Study — Cinematic Content System',
+  ogTitle: 'Othership Case Study — Cinematic Content System',
+  description: 'How a custom cinematic content system generated over 1M organic views. Designed by Gene Perez.',
+  ogDescription: 'How a custom cinematic content system generated over 1M organic views. Designed by Gene Perez.',
+  ogImage: 'https://chikireet.com/og-preview.jpg',
+  ogUrl: 'https://chikireet.com/case',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Othership Case Study — Cinematic Content System',
+  twitterDescription: 'How a custom cinematic content system generated over 1M organic views.',
+  twitterImage: 'https://chikireet.com/og-preview.jpg'
+})
 
 const isLoaded = ref(false)
 const isViewsCounterActive = ref(false)

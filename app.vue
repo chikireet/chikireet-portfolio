@@ -7,6 +7,18 @@
 
 <script setup>
 import { SpeedInsights } from '@vercel/speed-insights/vue'
+
+// Дефолтные теги для главной страницы твоего портфолио
+useSeoMeta({
+  title: 'Gene Perez | Director & Photographer in Toronto',
+  ogTitle: 'Gene Perez | Director & Photographer in Toronto',
+  description: 'Gene Perez is a Toronto-based director and photographer.',
+  ogDescription: 'Gene Perez is a Toronto-based director and photographer.',
+  // Здесь укажи ссылку на картинку-заглушку для твоего основного портфолио (например, твое лого)
+  ogImage: 'https://chikireet.com/portfolio-preview.jpg', 
+  ogUrl: 'https://chikireet.com',
+  twitterCard: 'summary_large_image'
+})
 </script>
 
 <style>
