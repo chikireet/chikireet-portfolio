@@ -339,7 +339,10 @@
                   <line x1="2" y1="12" x2="22" y2="12"></line>
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                 </svg>
-                <span>website</span>
+                <span>
+                  <span class="hidden sm:inline">website</span>
+                  <span class="inline sm:hidden">web</span>
+                </span>
               </a>
             </div>
           </div>
@@ -355,7 +358,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
         <p>Copyright © 2026. All rights reserved.</p>
         <div class="flex items-center space-x-4 text-[#8e8e93]">
-          <span class="text-white font-medium">Gene Perez designed and developed this case study.</span>
+          <span class="text-white font-medium">Gene Perez</span>
           <span class="text-white/10">|</span>
           <span>Toronto, ON</span>
         </div>
