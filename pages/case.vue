@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div class="brand-hybrid-shell !bg-[#000000] text-[#f5f5f7] font-sans antialiased min-h-screen selection:bg-[#0071e3] selection:text-white">
     
     <nav :class="['fixed top-0 left-0 w-full z-[9999] bg-[#000000]/70 backdrop-blur-md border-b border-white/10 transition-all duration-1000 ease-out', isLoaded ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 -translate-y-4 blur-md']">
@@ -81,7 +81,7 @@
         </p>
       </div>
 
-      <div v-reveal class="w-full bg-[#1c1c1e] rounded-[28px] border border-white/5 p-6 md:p-10 shadow-2xl cascade-container">
+      <div v-reveal id="grid-trigger" class="w-full bg-[#1c1c1e] rounded-[28px] border border-white/5 p-6 md:p-10 shadow-2xl cascade-container">
         <div class="flex items-center gap-3 border-b border-white/5 pb-6 mb-6 px-2 sub-step-1">
           <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shrink-0">
             <div class="w-full h-full rounded-full bg-[#1c1c1e] overflow-hidden flex items-center justify-center">
@@ -99,7 +99,8 @@
 
         <div class="grid grid-cols-3 gap-[2px] sub-step-2">
           <div v-for="(post, index) in instagramPosts" :key="index" 
-               class="relative aspect-[3/4] overflow-hidden bg-[#2c2c2e] border border-white/5 select-none pointer-events-none">
+               :class="['relative aspect-[3/4] overflow-hidden bg-[#2c2c2e] border border-white/5 select-none pointer-events-none transition-all duration-[700ms] cubic-bezier(0.19, 1, 0.22, 1)', revealedPosts.includes(index) ? 'opacity-100 scale-100 blur-none' : 'opacity-0 scale-[0.92] blur-md']">
+            
             <img :src="post.imageUrl" alt="Post thumbnail" class="absolute inset-0 w-full h-full object-cover z-0" />
             <div class="absolute bottom-3 left-3 z-20 flex items-center gap-1.5 text-white bg-black/60 backdrop-blur-md px-2 py-1 rounded-md border border-white/10">
               <svg class="w-3.5 h-3.5 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -134,7 +135,7 @@
             
             <div class="space-y-4 text-left flex flex-col justify-between h-full">
               <div>
-                <div class="text-[11px] font-semibold uppercase tracking-[0.04em] text-[#8e8e93] mb-1 card-step-1">Strategy</div>
+                <div class="text-[11px] font-semibold uppercase tracking-[0.04em] text-[#8e8e83] mb-1 card-step-1">Strategy</div>
                 <h4 class="text-[20px] font-semibold tracking-tight text-white leading-tight card-step-2">{{ pillar.title }}</h4>
                 <p class="text-[14px] text-[#8e8e93] font-normal tracking-normal leading-[1.4] mt-2 card-step-3">{{ pillar.description }}</p>
               </div>
@@ -356,18 +357,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// Обновленные мета-теги страницы
 useSeoMeta({
   title: 'Othership Case Study: 1M+ Organic Views',
-  ogTitle: 'Othership Case Study: 1M+ Organic Views',
+  ogTitle: 'Othership Study: 1M+ Organic Views',
   description: 'How strategic cinematic content transformed the customer journey.',
   ogDescription: 'How strategic cinematic content transformed the customer journey.',
   ogImage: 'https://chikireet.com/og-preview.jpg',
   ogUrl: 'https://chikireet.com/case',
-  twitterCard: 'summary_large_image',
-  twitterTitle: 'Othership Case Study: 1M+ Organic Views',
-  twitterDescription: 'How strategic cinematic content transformed the customer journey.',
-  twitterImage: 'https://chikireet.com/og-preview.jpg'
+  twitterCard: 'summary_large_image'
 })
 
 const isLoaded = ref(false)
@@ -383,18 +380,17 @@ const displayedResultsViews = ref('0')
 const animatedPovViews = ref(0)
 const animatedBfViews = ref(0)
 
-// Функция принудительного обновления страницы из верхнего меню
+// Массив индексов постов, которые прошли анимацию прелоадера
+const revealedPosts = ref([])
+
+// Безопасное обновление: сбрасываем хэш адреса, чтобы страница открылась с самого верха
 const refreshPage = () => {
+  window.location.hash = ''
   window.location.reload()
 }
 
 const businessTypes = ref([
-  'Wellness studios',
-  'Gyms',
-  'Spas',
-  'Hospitality',
-  'Premium services',
-  'Unique physical spaces'
+  'Wellness studios', 'Gyms', 'Spas', 'Hospitality', 'Premium services', 'Unique physical spaces'
 ])
 
 const vReveal = {
@@ -406,6 +402,9 @@ const vReveal = {
         if (entry.isIntersecting) {
           el.classList.add('reveal-active')
           
+          if (entry.target.id === 'grid-trigger') {
+            revealPostsRandomly()
+          }
           if (entry.target.id === 'stats-trigger' && !isViewsCounterActive.value) {
             isViewsCounterActive.value = true
             runComplexTicker('views')
@@ -422,6 +421,24 @@ const vReveal = {
     }, { threshold: 0.02, rootMargin: "0px 0px -40px 0px" })
     observer.observe(el)
   }
+}
+
+// Рандомизированное проявление постов в шахматном/случайном порядке
+const revealPostsRandomly = () => {
+  // Создаем массив индексов [0, 1, 2, ..., 8] и тасуем его
+  const indices = Array.from({ length: instagramPosts.value.length }, (_, i) => i)
+  
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]]
+  }
+
+  // Быстрый асинхронный конвейер появления (весь процесс занимает до 400-500мс)
+  indices.forEach((postIndex, step) => {
+    setTimeout(() => {
+      revealedPosts.value.push(postIndex)
+    }, step * 45) // 45мс шаг между проявлениями элементов
+  })
 }
 
 const strategyPillars = ref([
@@ -531,7 +548,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Стили остаются полностью прежними */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
 
 :global(body, html, #app, .brand-hybrid-shell) {
