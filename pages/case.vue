@@ -2,7 +2,7 @@
   <div class="brand-hybrid-shell !bg-[#000000] text-[#f5f5f7] font-sans antialiased min-h-screen selection:bg-[#0071e3] selection:text-white">
     
     <nav :class="['fixed top-0 left-0 w-full z-[9999] bg-[#000000]/70 backdrop-blur-md border-b border-white/10 transition-all duration-1000 ease-out', isLoaded ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 -translate-y-4 blur-md']">
-      <div class="max-w-[1024px] mx-auto px-6 h-12 flex items-center justify-between text-[12px] tracking-tight">
+      <div class="max-w-[1024px] mx-auto px-6 h-12 flex items-center justify-between text-[12px] tracking-tight"> 
         <div @click="refreshPage" class="font-semibold text-[14px] tracking-normal text-white cursor-pointer select-none active:opacity-70 transition">
           Othership Case Study <span class="text-[#8e8e93] font-light">/0027</span>
         </div>
@@ -312,16 +312,16 @@
               </a>
             </div>
 
-            <div class="pt-2 flex items-center flex-wrap gap-5 text-[13px] font-semibold tracking-normal text-[#2997ff] select-none lowercase sub-step-5">
-              <a href="mailto:gene@chikireet.com" class="flex items-center gap-1.5 hover:opacity-80 transition normal-case">
+            <div class="pt-2 flex items-center gap-5 text-[13px] font-semibold tracking-normal text-[#2997ff] select-none lowercase sub-step-5 overflow-x-auto flex-nowrap scrollbar-hide max-w-full">
+              <a href="mailto:gene@chikireet.com" class="flex items-center gap-1.5 hover:opacity-80 transition normal-case shrink-0">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
                 <span>gene@chikireet.com</span>
               </a>
-              <span class="text-white/10 font-normal">|</span>
-              <a href="https://www.instagram.com/chikireet/" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition">
+              <span class="text-white/10 font-normal shrink-0">|</span>
+              <a href="https://www.instagram.com/chikireet/" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition shrink-0">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -329,8 +329,8 @@
                 </svg>
                 <span>instagram</span>
               </a>
-              <span class="text-white/10 font-normal">|</span>
-              <a href="https://chikireet.com/" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition">
+              <span class="text-white/10 font-normal shrink-0">|</span>
+              <a href="https://chikireet.com/" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition shrink-0">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -352,15 +352,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
         <p>Copyright © 2026. All rights reserved.</p>
         <div class="flex items-center space-x-4 text-[#8e8e93]">
-          <a href="mailto:gene@chikireet.com" class="hover:text-white transition flex items-center gap-1">
-            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
-            </svg>
-            <span>gene@chikireet.com</span>
-          </a>
-          <span class="text-white/10">|</span>
-          <span class="text-white font-medium">Gene Perez</span>
+          <span class="text-white font-medium">I designed and developed this case study.</span>
           <span class="text-white/10">|</span>
           <span>Toronto, ON</span>
         </div>
@@ -403,7 +395,6 @@ const refreshPage = () => {
   window.location.reload()
 }
 
-// Из бегущей строки исключены рестораны
 const businessTypes = ref([
   'Wellness studios', 'Gyms', 'Spas', 'Hospitality', 'Premium services', 'Unique physical spaces'
 ])
@@ -412,12 +403,10 @@ const vReveal = {
   mounted: (el) => {
     el.classList.add('reveal-init')
 
-    // Оптимизированы настройки для корректного и своевременного появления инстаграм-сетки
     const isGrid = el.id === 'grid-trigger'
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Для сетки даем задержку в 350мс, чтобы дать пользователю доскроллить до контента
           setTimeout(() => {
             el.classList.add('reveal-active')
             if (entry.target.id === 'grid-trigger') {
@@ -443,7 +432,6 @@ const vReveal = {
         }
       })
     }, { 
-      // Изменено для триггера сетки, чтобы запуск происходил, когда элемент гарантированно зашел в область видимости
       threshold: isGrid ? 0.3 : 0.02, 
       rootMargin: isGrid ? "0px 0px -10% 0px" : "0px 0px -40px 0px" 
     })
@@ -459,7 +447,6 @@ const revealPostsRandomly = () => {
     [indices[i], indices[j]] = [indices[j], indices[i]]
   }
 
-  // Шаг увеличен до 120ms для более заметного каскадного эффекта
   indices.forEach((postIndex, step) => {
     setTimeout(() => {
       revealedPosts.value.push(postIndex)
@@ -467,7 +454,6 @@ const revealPostsRandomly = () => {
   })
 }
 
-// Карточки 3 и 4 поменялись местами в массиве структуры стратегий
 const strategyPillars = ref([
   {
     title: 'Experience Videos',
