@@ -318,8 +318,10 @@
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
-                <span class="sm:hidden">email</span>
-                <span class="hidden sm:inline">gene@chikireet.com</span>
+                <span>
+                  <span class="hidden sm:inline">gene@chikireet.com</span>
+                  <span class="inline sm:hidden">email</span>
+                </span>
               </a>
               <span class="text-white/10 font-normal shrink-0">|</span>
               <a href="https://www.instagram.com/chikireet/" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition shrink-0">
@@ -353,7 +355,7 @@
       <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
         <p>Copyright © 2026. All rights reserved.</p>
         <div class="flex items-center space-x-4 text-[#8e8e93]">
-          <span class="text-white font-medium">Gene Perez.</span>
+          <span class="text-white font-medium">Gene Perez designed and developed this case study.</span>
           <span class="text-white/10">|</span>
           <span>Toronto, ON</span>
         </div>
@@ -362,3 +364,323 @@
 
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+useSeoMeta({
+  title: 'Othership Case Study: 1M+ Organic Views',
+  ogTitle: 'Othership Study: 1M+ Organic Views',
+  description: 'How strategic cinematic content transformed the customer journey.',
+  ogDescription: 'How strategic cinematic content transformed the customer journey.',
+  ogImage: 'https://chikireet.com/og-preview.jpg',
+  ogUrl: 'https://chikireet.com/case',
+  twitterCard: 'summary_large_image'
+})
+
+const isLoaded = ref(false)
+const isViewsCounterActive = ref(false)
+const isResultsActive = ref(false)
+
+const isViewsBounce = ref(false)
+const isResultsBounce = ref(false)
+
+const displayedViews = ref('0')
+const displayedResultsViews = ref('0')
+
+const animatedPovViews = ref(0)
+const animatedBfViews = ref(0)
+
+const revealedPosts = ref([])
+
+const refreshPage = () => {
+  window.location.hash = ''
+  window.location.reload()
+}
+
+const businessTypes = ref([
+  'Wellness studios', 'Gyms', 'Spas', 'Hospitality', 'Premium services', 'Unique physical spaces'
+])
+
+const vReveal = {
+  mounted: (el) => {
+    el.classList.add('reveal-init')
+
+    const isGrid = el.id === 'grid-trigger'
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            el.classList.add('reveal-active')
+            if (entry.target.id === 'grid-trigger') {
+              revealPostsRandomly()
+            }
+          }, isGrid ? 350 : 0)
+
+          if (!isGrid) {
+            el.classList.add('reveal-active')
+          }
+          
+          if (entry.target.id === 'stats-trigger' && !isViewsCounterActive.value) {
+            isViewsCounterActive.value = true
+            runComplexTicker('views')
+          }
+          if (entry.target.id === 'results-trigger' && !isResultsActive.value) {
+            isResultsActive.value = true
+            runComplexTicker('results')
+            runNumberTicker(animatedPovViews, 218, 1000)
+            runNumberTicker(animatedBfViews, 110, 1000)
+          }
+          observer.unobserve(el)
+        }
+      })
+    }, { 
+      threshold: isGrid ? 0.3 : 0.02, 
+      rootMargin: isGrid ? "0px 0px -10% 0px" : "0px 0px -40px 0px" 
+    })
+    observer.observe(el)
+  }
+}
+
+const revealPostsRandomly = () => {
+  const indices = Array.from({ length: instagramPosts.value.length }, (_, i) => i)
+  
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]]
+  }
+
+  indices.forEach((postIndex, step) => {
+    setTimeout(() => {
+      revealedPosts.value.push(postIndex)
+    }, step * 120) 
+  })
+}
+
+const strategyPillars = ref([
+  {
+    title: 'Experience Videos',
+    description: 'Cinematic POV videos that made viewers feel like they were already inside the space.',
+    video: 'https://www.dropbox.com/scl/fi/ej8pzo2qvk66ew612b4rw/1.mp4?rlkey=r5f4w7vpk2p1809uwxzyi6eye&st=e0turlai&raw=1',
+    reelUrl: 'https://www.instagram.com/reels/C3-qklVgjnB/'
+  },
+  {
+    title: 'Customer Testimonials',
+    description: 'Real stories from real people to build trust and social proof.',
+    video: 'https://www.dropbox.com/scl/fi/t0qgkyha6k44hhd6xacze/2.mp4?rlkey=9bnns6mwubvfcy5tohls17tnx&st=paxtbpvo&raw=1',
+    reelUrl: 'https://www.instagram.com/reels/C8Zzc0Nuhb_/'
+  },
+  {
+    title: 'Educational Content',
+    description: 'Answering the most common questions and removing uncertainty.',
+    video: 'https://www.dropbox.com/scl/fi/xq8b1e0ocn5pw22k7vrq6/3.mp4?rlkey=1bnmfkmvumafi7s0wtvmu8178&st=0mkz5uem&raw=1',
+    reelUrl: 'https://www.instagram.com/reels/C6B8K5-gJ23/'
+  },
+  {
+    title: 'Space & Atmosphere',
+    description: 'Showing the design, energy, and details that make the location unique.',
+    video: 'https://www.dropbox.com/scl/fi/4z6v9es64kxy54c0wsyw1/4.mp4?rlkey=m30gc4n19b3be06mq4dhidbml&st=u6fgmjjn&raw=1',
+    reelUrl: 'https://www.instagram.com/reels/C_JCthypFIM/'
+  },
+  {
+    title: 'Promotional Campaigns',
+    description: 'High-impact content designed around special launches and events.',
+    video: 'https://www.dropbox.com/scl/fi/3hfmhzozv88lkyekm5ol0/5.mp4?rlkey=s9rrk4jbyk4oe4c8u8r1j33n9&st=x5tq6yjk&raw=1',
+    reelUrl: 'https://www.instagram.com/reels/DReopg8jXX4/'
+  }
+])
+
+const instagramPosts = ref([
+  { views: '218K', imageUrl: '/othership-grid-1.jpg' },
+  { views: '25.5K', imageUrl: '/othership-grid-2.jpg' },
+  { views: '110K', imageUrl: '/othership-grid-3.jpg' },
+  { views: '26K', imageUrl: '/othership-grid-4.jpg' },
+  { views: '26.5K', imageUrl: '/othership-grid-5.jpg' },
+  { views: '17.5K', imageUrl: '/othership-grid-6.jpg' },
+  { views: '34.5K', imageUrl: '/othership-grid-7.jpg' },
+  { views: '21.7K', imageUrl: '/othership-grid-8.jpg' },
+  { views: '19.1K', imageUrl: '/othership-grid-9.jpg' }
+])
+
+const runComplexTicker = (mode) => {
+  const startTime = performance.now()
+  const duration = 900
+  const ceiling = 999999
+
+  const animate = (currentTime) => {
+    const elapsedTime = currentTime - startTime
+    const progress = Math.min(elapsedTime / duration, 1)
+    const currentNum = Math.floor(progress * ceiling)
+
+    if (mode === 'views') {
+      displayedViews.value = currentNum.toLocaleString()
+    } else {
+      displayedResultsViews.value = currentNum.toLocaleString()
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(animate)
+    } else {
+      setTimeout(() => {
+        if (mode === 'views') {
+          displayedViews.value = '1M'
+          isViewsBounce.value = true
+        } else {
+          displayedResultsViews.value = '1M'
+          isResultsBounce.value = true
+        }
+      }, 80)
+    }
+  }
+  requestAnimationFrame(animate)
+}
+
+const runNumberTicker = (refItem, ceiling, timeline) => {
+  const startTime = performance.now()
+  const animate = (currentTime) => {
+    const elapsedTime = currentTime - startTime
+    const progress = Math.min(elapsedTime / timeline, 1)
+    const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
+    
+    refItem.value = Math.floor(easeProgress * ceiling)
+    if (progress < 1) requestAnimationFrame(animate)
+  }
+  requestAnimationFrame(animate)
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 100)
+
+  let themeMeta = document.querySelector('meta[name="theme-color"]')
+  if (!themeMeta) {
+    themeMeta = document.createElement('meta')
+    themeMeta.setAttribute('name', 'theme-color')
+    document.head.appendChild(themeMeta)
+  }
+  themeMeta.setAttribute('content', '#000000')
+})
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+
+:global(body, html, #app, .brand-hybrid-shell) {
+  background-color: #000000 !important;
+}
+
+.font-instrument { font-family: 'Instrument Serif', serif; }
+.font-scribble { font-family: 'Caveat', cursive; }
+
+:global(html) {
+  scroll-behavior: smooth;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+.animate-marquee { animation: marquee 24s linear infinite; }
+
+.mask-gradient {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+@keyframes bounceHorizontal {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+.animate-bounce-horizontal-reverse { animation: bounceHorizontal 1.6s infinite ease-in-out; }
+
+@keyframes elasticScale {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  55% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+.animate-bounce-scale { animation: elasticScale 0.65s cubic-bezier(0.25, 1, 0.5, 1) both; }
+
+.reveal-init {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(24px);
+  transition: opacity 1200ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1200ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-active {
+  opacity: 1 !important;
+  filter: blur(0px) !important;
+  transform: translateY(0px) !important;
+}
+
+.cascade-container .sub-step-1,
+.cascade-container .sub-step-2,
+.cascade-container .sub-step-3,
+.cascade-container .sub-step-4,
+.cascade-container .sub-step-5 {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(16px);
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-active.cascade-container .sub-step-1,
+.reveal-active.cascade-container .sub-step-2,
+.reveal-active.cascade-container .sub-step-3,
+.reveal-active.cascade-container .sub-step-4,
+.reveal-active.cascade-container .sub-step-5 {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0px);
+}
+
+.reveal-active.cascade-container .sub-step-1 { transition-delay: 150ms; }
+.reveal-active.cascade-container .sub-step-2 { transition-delay: 350ms; }
+.reveal-active.cascade-container .sub-step-3 { transition-delay: 550ms; }
+.reveal-active.cascade-container .sub-step-4 { transition-delay: 750ms; }
+.reveal-active.cascade-container .sub-step-5 { transition-delay: 950ms; }
+
+.card-reveal-container .card-step-1,
+.card-reveal-container .card-step-2,
+.card-reveal-container .card-step-3,
+.card-reveal-container .card-step-4,
+.card-reveal-container .card-step-phone {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(12px);
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 800ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-reveal-container .card-step-phone { transform: scale(0.93); }
+
+.reveal-active .card-reveal-container .card-step-1,
+.reveal-active .card-reveal-container .card-step-2,
+.reveal-active .card-reveal-container .card-step-3,
+.reveal-active .card-reveal-container .card-step-4 {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0px);
+}
+.reveal-active .card-reveal-container .card-step-phone {
+  opacity: 1;
+  filter: blur(0px);
+  transform: scale(1);
+}
+
+.reveal-active .card-reveal-container .card-step-1 { transition-delay: 100ms; }
+.reveal-active .card-reveal-container .card-step-2 { transition-delay: 250ms; }
+.reveal-active .card-reveal-container .card-step-3 { transition-delay: 400ms; }
+.reveal-active .card-reveal-container .card-step-4 { transition-delay: 550ms; }
+.reveal-active .card-reveal-container .card-step-phone { transition-delay: 300ms; transition-duration: 1100ms; }
+</style>
